@@ -1,5 +1,6 @@
 import requests
 import json
+import appdirs
 
 student_id = 60035
 begining_week = "2026-03-02T00%3A00%3A00%2B01%3A00"
