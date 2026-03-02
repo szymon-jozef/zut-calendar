@@ -1,4 +1,4 @@
-from zut_calendar import api, config
+from zut_calendar import api
 
 def main():
     plan = api.get_plan()

@@ -10,6 +10,8 @@ from zut_calendar import config
 def _get_dates() -> tuple[str, str]:
     tz = ZoneInfo("Europe/Warsaw")
     now = datetime.now(tz)
+    lconfig = config.Config()
+    lconfig.save_last_run(now)
 
     start = now - timedelta(days=now.weekday())
     start = start.replace(hour=0,minute=0, second=0, microsecond=0)
@@ -33,23 +35,34 @@ def _get_url() -> str:
 
     if student_id is None:
         student_id = input("Please enter your id: ")
-        lconfig.save(student_id)
+        lconfig.save_student_id(student_id)
 
     start, end = _get_dates()
 
     return f"https://plan.zut.edu.pl/schedule_student.php?number={student_id}&start={start}&end={end}"
 
-def get_plan():
+def get_plan(force_refresh=False):
+    lcache = config.Cache()
+
+    if not force_refresh:
+        tz = ZoneInfo("Europe/Warsaw")
+        now = datetime.now(tz)
+        lconfig = config.Config()
+        lconfig.read_config()
+        if now.date() == lconfig.last_run:
+           print("Last refresh was today, so I'm reading cache...")
+           return lcache.get_cache()
+
     result = requests.get(_get_url())
 
     try:
         result.raise_for_status()
     except HTTPError as e:
         print(f"Error while getting http request: {e}")
+        return None
 
-    plan = json.loads(result.text)
+    plan = result.json()
 
-    lcache = config.Cache()
     lcache.save_cache(plan)
 
     return plan
