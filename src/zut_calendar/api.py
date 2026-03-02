@@ -1,31 +1,56 @@
 import requests
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+from urllib.parse import quote
 import json
-import appdirs
+from requests.models import HTTPError
 
-student_id = 60035
-begining_week = "2026-03-02T00%3A00%3A00%2B01%3A00"
-end_week = "2026-03-09T00%3A00%3A00%2B01%3A00"
-url = f"https://plan.zut.edu.pl/schedule_student.php?number={student_id}&start={begining_week}&end={end_week}"
+from zut_calendar import config
 
-result = requests.get(url)
+def _get_dates() -> tuple[str, str]:
+    tz = ZoneInfo("Europe/Warsaw")
+    now = datetime.now(tz)
 
-class ClassEntry:
-    def __new__(self) -> Self:
-        self.title
-        self.start
-        self.end
-        self.worker
-        self.group_name
-        self.room
-        self.hours
-        pass
+    start = now - timedelta(days=now.weekday())
+    start = start.replace(hour=0,minute=0, second=0, microsecond=0)
 
-def test():
+    end = start + timedelta(days=6)
+    end = end.replace(hour=23,minute=59, second=59, microsecond=59)
+
+    start_iso = start.isoformat()
+    end_iso = end.isoformat()
+
+    start_url = quote(start_iso)
+    end_url = quote(end_iso)
+
+    return start_url, end_url
+
+def _get_url() -> str:
+    lconfig = config.Config()
+    lconfig.read_config()
+
+    student_id = lconfig.student_id
+
+    if student_id is None:
+        student_id = input("Please enter your id: ")
+        lconfig.save(student_id)
+
+    start, end = _get_dates()
+
+    return f"https://plan.zut.edu.pl/schedule_student.php?number={student_id}&start={start}&end={end}"
+
+def get_plan():
+    result = requests.get(_get_url())
+
     try:
-        result.raise_for_status
+        result.raise_for_status()
+    except HTTPError as e:
+        print(f"Error while getting http request: {e}")
 
-        for q in json.loads(result.text)[1]:
-            print(q)
-        
-    except Exception as e:
-        print(f"Error: {e}")
+    plan = json.loads(result.text)
+
+    lcache = config.Cache()
+    lcache.save_cache(plan)
+
+    return plan
+
