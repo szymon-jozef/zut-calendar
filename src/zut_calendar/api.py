@@ -2,7 +2,6 @@ import requests
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from urllib.parse import quote
-import json
 from requests.models import HTTPError
 
 from zut_calendar import config

@@ -1,0 +1,17 @@
+DayColumn {
+    width: 1fr;
+    height: 100%;
+    border: solid green;
+}
+
+ClassEvent {
+    border: round white;
+    margin: 1;
+    padding: 1;
+    height: auto;
+}
+
+ClassEvent:focus {
+    border: round yellow;
+    background: $accent-darken-2;
+}
