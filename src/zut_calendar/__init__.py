@@ -1,4 +1,4 @@
-from zut_calendar import api
+from zut_calendar import api, data
 import argparse
 
 def main():
@@ -11,7 +11,8 @@ def main():
     args = parser.parse_args()
 
     plan = api.get_plan(args.force_refresh)
-    print(plan)
+    ce = data.ClassList(plan)
+    print(ce)
 
 if __name__ == "__main__":
     main()
