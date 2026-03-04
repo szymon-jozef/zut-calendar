@@ -31,7 +31,7 @@ class Config:
             except ValueError:
                 self.last_run = None
 
-    def save_student_id(self, student_id: str | int) -> None:
+    def save_student_id(self, student_id: str | int | None) -> None:
         if not self._config_parser.has_section("user"):
             self._config_parser.add_section("user")
 

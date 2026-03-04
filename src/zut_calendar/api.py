@@ -1,3 +1,5 @@
+import os
+import gettext
 import requests
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -5,6 +7,14 @@ from urllib.parse import quote
 from requests.models import HTTPError
 
 from zut_calendar import config
+
+current_dir = os.path.abspath(os.path.dirname(__file__))
+localedir = os.path.join(current_dir, 'locales')
+t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
+_ = t.gettext
+
+class MissingStudentId(Exception):
+    pass
 
 def _get_dates() -> tuple[str, str]:
     tz = ZoneInfo("Europe/Warsaw")
@@ -33,8 +43,12 @@ def _get_url() -> str:
     student_id = lconfig.student_id
 
     if student_id is None:
-        student_id = input("Please enter your id: ")
-        lconfig.save_student_id(student_id)
+        raise MissingStudentId(_("No student id found"))
+
+    student_id_str = str(student_id).strip()
+
+    if not student_id_str or len(student_id_str) < 4:
+        raise ValueError(_("Invalid student ID format"))
 
     start, end = _get_dates()
 
@@ -49,7 +63,7 @@ def get_plan(force_refresh=False):
         lconfig = config.Config()
         lconfig.read_config()
         if now.date() == lconfig.last_run:
-           print("Last refresh was today, so I'm reading cache...")
+           print(_("Last refresh was today, so I'm reading cache..."))
            return lcache.get_cache()
 
     result = requests.get(_get_url())
@@ -57,12 +71,10 @@ def get_plan(force_refresh=False):
     try:
         result.raise_for_status()
     except HTTPError as e:
-        print(f"Error while getting http request: {e}")
+        print(_("Error while getting http request: {}").format(e))
         return None
 
     plan = result.json()
-
     lcache.save_cache(plan)
 
     return plan
-
