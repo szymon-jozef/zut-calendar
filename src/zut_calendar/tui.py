@@ -19,20 +19,39 @@ class ZutCalendarApp(App):
             #("l", "focus_right", "Go right")
             ]
 
+    def build_calendar(self, refresh=False) -> Horizontal:
+        classes = data.ClassList(api.get_plan(refresh)).list
+        today = datetime.today()
+        monday = today - timedelta(days=today.weekday())
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+        columns = []
+        for i in range(7):
+            current_day = monday + timedelta(days=i)
+
+            date_str = current_day.strftime("%Y-%m-%d")
+            day_name = days[i]
+
+            events_of_day = []
+
+            for event in classes:
+                if event.start and event.start.startswith(date_str):
+                    events_of_day.append(event)
+
+            columns.append(DayColumn(day_name, events_of_day))
+
+        return Horizontal(*columns, id="main_calendar")
+        
+
     def compose(self) -> ComposeResult:
         yield Header()
-
-        test_event = data.ClassEntry({"title": "Matematyka", "description": "Sala 101"})
-        with Horizontal():
-            yield DayColumn("Monday", [test_event, test_event])
-            yield DayColumn("Tuesday",[test_event])
-            yield DayColumn("Wednesday",[test_event])
-            yield DayColumn("Thursday",[test_event])
-            yield DayColumn("Friday",[test_event])
-            yield DayColumn("Saturday",[test_event])
-            yield DayColumn("Sunday",[test_event])
-        
+        yield self.build_calendar()
         yield Footer()
+
+    async def action_refresh(self):
+       await self.query_one("#main_calendar").remove()
+       await self.mount(self.build_calendar(True))
+        
 
 class DayColumn(VerticalScroll):
     def __init__(self, day_name, events: list):
@@ -53,8 +72,8 @@ class ClassEvent(Widget):
         self.can_focus = True
 
     def compose(self):
-        yield Label(self.data.title)
         yield Label(self.data.description)
+        yield Label(self.data.worker)
 
 if __name__ == "__main__":
     app = ZutCalendarApp()
