@@ -1,3 +1,6 @@
+import os
+import gettext
+
 from datetime import datetime, timedelta
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, VerticalScroll, Center, Middle
@@ -7,12 +10,17 @@ from textual.widget import Widget
 
 from zut_calendar import data, api
 
+current_dir = os.path.abspath(os.path.dirname(__file__))
+localedir = os.path.join(current_dir, 'locales')
+t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
+_ = t.gettext
+
 class ZutCalendarApp(App):
     CSS_PATH = "./style.tcss"
 
     BINDINGS = [
-            ("q", "quit", "Quit app"),
-            ("f5", "refresh", "Refresh")
+            ("q", "quit", _("Quit app")),
+            ("f5", "refresh", _("Refresh"))
             #("h", "focus_left","Go left"),
             #("j", "focus_down", "Go down"),
             #("k", "focus_up", "Go up"),
@@ -23,7 +31,7 @@ class ZutCalendarApp(App):
         classes = data.ClassList(api.get_plan(refresh)).list
         today = datetime.today()
         monday = today - timedelta(days=today.weekday())
-        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        days = [_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday")]
 
         columns = []
         for i in range(7):
@@ -51,6 +59,7 @@ class ZutCalendarApp(App):
     async def action_refresh(self):
        await self.query_one("#main_calendar").remove()
        await self.mount(self.build_calendar(True))
+       self.notify(_("Calendar refreshed!"), title=_("Refreshed"), severity="information")
         
 
 class DayColumn(VerticalScroll):

@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Language: pl\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: src/zut_calendar/tui.py:22
+msgid "Quit app"
+msgstr "Wyjdź z aplikacji"
+
+#: src/zut_calendar/tui.py:23
+msgid "Refresh"
+msgstr "Odśwież"
+
+#: src/zut_calendar/tui.py:34
+msgid "Monday"
+msgstr "Poniedziałek"
+
+#: src/zut_calendar/tui.py:34
+msgid "Tuesday"
+msgstr "Wtorek"
+
+#: src/zut_calendar/tui.py:34
+msgid "Wednesday"
+msgstr "Środa"
+
+#: src/zut_calendar/tui.py:34
+msgid "Thursday"
+msgstr "Czwartek"
+
+#: src/zut_calendar/tui.py:34
+msgid "Friday"
+msgstr "Piątek"
+
+#: src/zut_calendar/tui.py:34
+msgid "Saturday"
+msgstr "Sobota"
+
+#: src/zut_calendar/tui.py:34
+msgid "Sunday"
+msgstr "Niedziela"
+
+#: src/zut_calendar/tui.py:62
+msgid "Calendar refreshed!"
+msgstr "Kalendarz został odświeżony!"
+
+#: src/zut_calendar/tui.py:62
+msgid "Refreshed"
+msgstr "Odświeżono"
