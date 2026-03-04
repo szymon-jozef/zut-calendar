@@ -1,50 +1,83 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-04 13:29+0100\n"
+"POT-Creation-Date: 2026-03-04 20:01+0100\n"
 "Language: pl\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/zut_calendar/tui.py:22
+#: src/zut_calendar/api.py:46
+msgid "No student id found"
+msgstr "Nie znaleziono numeru indeksu"
+
+#: src/zut_calendar/api.py:51
+msgid "Invalid student ID format"
+msgstr "Niepoprawny format numeru indeksu"
+
+#: src/zut_calendar/api.py:66
+msgid "Last refresh was today, so I'm reading cache..."
+msgstr "Ostatnio odświeżano dzisiaj, więc czytam pamięć podręczną..."
+
+#: src/zut_calendar/api.py:74
+#, python-brace-format
+msgid "Error while getting http request: {}"
+msgstr "Błąd podczas zapytania http: {}"
+
+#: src/zut_calendar/tui.py:26
 msgid "Quit app"
 msgstr "Wyjdź z aplikacji"
 
-#: src/zut_calendar/tui.py:23
+#: src/zut_calendar/tui.py:27
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:38
+msgid "No student ID found."
+msgstr "Nie znaleziono numer indeksu."
+
+#: src/zut_calendar/tui.py:40
+msgid "Invalid student ID"
+msgstr "Niepoprawny numer indeksu"
+
+#: src/zut_calendar/tui.py:44
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:44
 msgid "Tuesday"
 msgstr "Wtorek"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:44
 msgid "Wednesday"
 msgstr "Środa"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:44
 msgid "Thursday"
 msgstr "Czwartek"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:44
 msgid "Friday"
 msgstr "Piątek"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:44
 msgid "Saturday"
 msgstr "Sobota"
 
-#: src/zut_calendar/tui.py:34
+#: src/zut_calendar/tui.py:44
 msgid "Sunday"
 msgstr "Niedziela"
 
-#: src/zut_calendar/tui.py:62
+#: src/zut_calendar/tui.py:76
+msgid "Invalid student ID!"
+msgstr "Niepoprawny numer indeksu!"
+
+#: src/zut_calendar/tui.py:87
 msgid "Calendar refreshed!"
 msgstr "Kalendarz został odświeżony!"
 
-#: src/zut_calendar/tui.py:62
+#: src/zut_calendar/tui.py:87
 msgid "Refreshed"
 msgstr "Odświeżono"
+
+#: src/zut_calendar/tui.py:118
+msgid "Please enter your student ID"
+msgstr "Proszę podać numer indeksu"
