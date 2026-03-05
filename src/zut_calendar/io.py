@@ -34,10 +34,10 @@ class Config:
 
 
 class Cache:
-    def __init__(self) -> None:
+    def __init__(self, fname) -> None:
         self._cache_dir = Path(appdirs.user_cache_dir( _APP_NAME, _AUTHOR))
         self._cache_dir.mkdir(parents=True, exist_ok=True)
-        self._cache_file = self._cache_dir / "cache.json"
+        self._cache_file = self._cache_dir / fname
     
     def get_cache(self) -> dict | list| None:
         if not self._cache_file.exists():
@@ -53,6 +53,9 @@ class Cache:
     def save_cache(self, data: dict | list) -> None:
         with open(self._cache_file, "w") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
+
+    def exists(self) -> bool:
+        return self._cache_file.exists()
 
 class State:
     def __init__(self) -> None:

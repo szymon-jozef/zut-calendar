@@ -47,7 +47,7 @@ def _get_url() -> str:
 
     student_id_str = str(student_id).strip()
 
-    if not student_id_str or len(student_id_str) < 4:
+    if not student_id_str or student_id_str == "None" or len(student_id_str) < 4:
         raise ValueError(_("Invalid student ID format"))
 
     start, end = _get_dates()
@@ -55,17 +55,20 @@ def _get_url() -> str:
     return f"https://plan.zut.edu.pl/schedule_student.php?number={student_id}&start={start}&end={end}"
 
 def get_plan(force_refresh=False):
-    cache = io.Cache()
+    tz = ZoneInfo("Europe/Warsaw")
+    now = datetime.now(tz)
+    start = now - timedelta(days=now.weekday())
+    cache_name = start.strftime("%G-W%V-%u.json")
+
+    cache = io.Cache(cache_name)
 
     if not force_refresh:
-        tz = ZoneInfo("Europe/Warsaw")
-        now = datetime.now(tz)
         state = io.State()
         last_run = state.get_last_run()
 
         # if last_run is not this condition won't be met so we can just do nothing about it :D
 
-        if now.date() == last_run:
+        if now.date() == last_run and cache.exists():
            print(_("Last refresh was today, so I'm reading cache..."))
            return cache.get_cache()
 
