@@ -24,23 +24,28 @@ class ZutCalendarApp(App):
 
     BINDINGS = [
             ("q", "quit", _("Quit app")),
-            ("f5", "refresh", _("Refresh"))
+            ("f5", "refresh", _("Refresh")),
+            ("H", "week_before", ("Week before")),
+            ("L", "week_next", ("Week next"))
             #("h", "focus_left","Go left"),
             #("j", "focus_down", "Go down"),
             #("k", "focus_up", "Go up"),
             #("l", "focus_right", "Go right")
             ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.week_offset = 0
 
     def build_calendar(self, refresh=False) -> Horizontal:
         try:
-            classes = data.ClassList(api.get_plan(refresh)).list
+            classes = data.ClassList(api.get_plan(force_refresh=refresh, week_offset=self.week_offset)).list
         except api.MissingStudentId:
             return Horizontal(Label(_("No student ID found.")), id="main_calendar")
         except ValueError:
             return Horizontal(Label(_("Invalid student ID")), id="main_calendar")
 
         today = datetime.today()
-        monday = today - timedelta(days=today.weekday())
+        monday = today - timedelta(days=today.weekday()) + timedelta(weeks=self.week_offset)
         days = [_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday")]
 
         columns = []
@@ -69,7 +74,7 @@ class ZutCalendarApp(App):
     @work
     async def action_refresh(self):
         try:
-            await asyncio.to_thread(api.get_plan, True)
+            await asyncio.to_thread(api.get_plan, True, self.week_offset)
         except (api.MissingStudentId, ValueError) as e:
             config = io.Config()
             if isinstance(e, ValueError):
@@ -85,6 +90,14 @@ class ZutCalendarApp(App):
         await self.query_one("#main_calendar").remove()
         await self.mount(self.build_calendar(False)) 
         self.notify(_("Calendar refreshed!"), title=_("Refreshed"), severity="information")
+
+    def action_week_before(self):
+        self.week_offset -= 1
+        self.action_refresh()
+
+    def action_week_next(self):
+        self.week_offset += 1
+        self.action_refresh()
 
     async def on_mount(self):
         self.action_refresh()
