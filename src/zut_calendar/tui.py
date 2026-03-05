@@ -19,22 +19,14 @@ localedir = os.path.join(current_dir, 'locales')
 t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
 _ = t.gettext
 
+
 class ZutCalendarApp(App):
     CSS_PATH = "./style.tcss"
 
-    BINDINGS = [
-            ("q", "quit", _("Quit app")),
-            ("f5", "refresh", _("Refresh")),
-            ("H", "week_before", ("Week before")),
-            ("L", "week_next", ("Week next"))
-            #("h", "focus_left","Go left"),
-            #("j", "focus_down", "Go down"),
-            #("k", "focus_up", "Go up"),
-            #("l", "focus_right", "Go right")
-            ]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.week_offset = 0
+        self.config = io.Config()
 
     def build_calendar(self, refresh=False) -> Horizontal:
         try:
@@ -91,16 +83,23 @@ class ZutCalendarApp(App):
         await self.mount(self.build_calendar(False)) 
         self.notify(_("Calendar refreshed!"), title=_("Refreshed"), severity="information")
 
-    def action_week_before(self):
+    def action_prev_week(self):
         self.week_offset -= 1
         self.action_refresh()
 
-    def action_week_next(self):
+    def action_next_week(self):
         self.week_offset += 1
         self.action_refresh()
 
     async def on_mount(self):
-        self.action_refresh()
+        self.bind(self.config.nav_quit, "quit", description=_("Quit app"))
+        self.bind(self.config.nav_refresh, "refresh", description=_("Refresh"))
+        self.bind(self.config.nav_prev_week, "prev_week", description=_("Week before"))
+        self.bind(self.config.nav_next_week, "next_week", description=_("Week next"))
+        self.bind(self.config.nav_left, "focus_left",description=_("Go left"))
+        self.bind(self.config.nav_down, "focus_down",description=_( "Go down"))
+        self.bind(self.config.nav_up, "focus_up", description=_("Go up"))
+        self.bind(self.config.nav_right, "focus_right", description=_("Go right"))
 
 class DayColumn(VerticalScroll):
     def __init__(self, day_name, events: list):
