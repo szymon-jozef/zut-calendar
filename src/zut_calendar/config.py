@@ -17,19 +17,11 @@ class Config:
 
         self._config_parser.read(self._config_file)
 
-        self.student_id = None
-        self.last_run: datetime.date | None = None
+        self.read_config()
+
 
     def read_config(self) -> None:
         self.student_id = self._config_parser.get("user","student_id", fallback=None)
-
-        last_run_str = self._config_parser.get("global","last_run", fallback=None)
-
-        if last_run_str:
-            try:
-                self.last_run = datetime.datetime.fromisoformat(last_run_str).date()
-            except ValueError:
-                self.last_run = None
 
     def save_student_id(self, student_id: str | int | None) -> None:
         if not self._config_parser.has_section("user"):
@@ -40,14 +32,6 @@ class Config:
         with open(self._config_file, "w") as configfile:
             self._config_parser.write(configfile)
 
-    def save_last_run(self, last_run: datetime.datetime) -> None:
-        if not self._config_parser.has_section("global"):
-            self._config_parser.add_section("global")
-
-        self._config_parser.set("global", "last_run", str(last_run))
-
-        with open(self._config_file, "w") as configfile:
-            self._config_parser.write(configfile)
 
 class Cache:
     def __init__(self) -> None:
@@ -69,3 +53,27 @@ class Cache:
     def save_cache(self, data: dict | list) -> None:
         with open(self._cache_file, "w") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
+
+class State:
+    def __init__(self) -> None:
+        self._state_dir = Path(appdirs.user_state_dir(_APP_NAME, _AUTHOR))
+        self._state_dir.mkdir(parents=True, exist_ok=True)
+        self._state_file = self._state_dir / "state.json"
+
+    def save_last_run(self, last_run: datetime.datetime) -> None:
+        state = {
+                "last_run": str(last_run)
+        }
+        with open(self._state_file, "w") as state_file:
+            json.dump(state, state_file,  ensure_ascii=False, indent=4)
+
+    def get_last_run(self) -> datetime.datetime | None:
+        if not self._state_file.exists():
+            print("State file doesn't exists...")
+            return None
+
+        with open(self._state_file, "r") as state_file:
+            try:
+                return datetime.datetime.fromisoformat(json.load(state_file)["last_run"])
+            except Exception:
+                return None

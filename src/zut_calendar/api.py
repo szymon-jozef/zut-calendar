@@ -19,8 +19,8 @@ class MissingStudentId(Exception):
 def _get_dates() -> tuple[str, str]:
     tz = ZoneInfo("Europe/Warsaw")
     now = datetime.now(tz)
-    lconfig = config.Config()
-    lconfig.save_last_run(now)
+    lstate = config.State()
+    lstate.save_last_run(now)
 
     start = now - timedelta(days=now.weekday())
     start = start.replace(hour=0,minute=0, second=0, microsecond=0)
@@ -60,9 +60,12 @@ def get_plan(force_refresh=False):
     if not force_refresh:
         tz = ZoneInfo("Europe/Warsaw")
         now = datetime.now(tz)
-        lconfig = config.Config()
-        lconfig.read_config()
-        if now.date() == lconfig.last_run:
+        lstate = config.State()
+        last_run = lstate.get_last_run()
+
+        # if last_run is not this condition won't be met so we can just do nothing about it :D
+
+        if now.date() == last_run:
            print(_("Last refresh was today, so I'm reading cache..."))
            return lcache.get_cache()
 
