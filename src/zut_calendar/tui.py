@@ -110,6 +110,8 @@ class ClassEvent(Widget):
     def compose(self):
         yield Label(self.data.description)
         yield Label(self.data.worker)
+        type_str = self.data.type.value if self.data.type else "Unknown"
+        yield Label(type_str)
 
 class LoginWindow(ModalScreen[str]):
     def compose(self) -> ComposeResult:
