@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 from urllib.parse import quote
 from requests.models import HTTPError
 
-from zut_calendar import config
+from zut_calendar import io
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 localedir = os.path.join(current_dir, 'locales')
@@ -19,7 +19,7 @@ class MissingStudentId(Exception):
 def _get_dates() -> tuple[str, str]:
     tz = ZoneInfo("Europe/Warsaw")
     now = datetime.now(tz)
-    lstate = config.State()
+    lstate = io.State()
     lstate.save_last_run(now)
 
     start = now - timedelta(days=now.weekday())
@@ -37,10 +37,10 @@ def _get_dates() -> tuple[str, str]:
     return start_url, end_url
 
 def _get_url() -> str:
-    lconfig = config.Config()
-    lconfig.read_config()
+    config = io.Config()
+    config.read_config()
 
-    student_id = lconfig.student_id
+    student_id = config.student_id
 
     if student_id is None:
         raise MissingStudentId(_("No student id found"))
@@ -55,19 +55,19 @@ def _get_url() -> str:
     return f"https://plan.zut.edu.pl/schedule_student.php?number={student_id}&start={start}&end={end}"
 
 def get_plan(force_refresh=False):
-    lcache = config.Cache()
+    cache = io.Cache()
 
     if not force_refresh:
         tz = ZoneInfo("Europe/Warsaw")
         now = datetime.now(tz)
-        lstate = config.State()
-        last_run = lstate.get_last_run()
+        state = io.State()
+        last_run = state.get_last_run()
 
         # if last_run is not this condition won't be met so we can just do nothing about it :D
 
         if now.date() == last_run:
            print(_("Last refresh was today, so I'm reading cache..."))
-           return lcache.get_cache()
+           return cache.get_cache()
 
     result = requests.get(_get_url())
 
@@ -78,6 +78,6 @@ def get_plan(force_refresh=False):
         return None
 
     plan = result.json()
-    lcache.save_cache(plan)
+    cache.save_cache(plan)
 
     return plan

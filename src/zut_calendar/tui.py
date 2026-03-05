@@ -12,7 +12,7 @@ from textual import work
 from textual.widgets import Footer, Header, Label, Placeholder, Static
 from textual.widget import Widget
 
-from zut_calendar import data, api, config
+from zut_calendar import data, api, io
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 localedir = os.path.join(current_dir, 'locales')
@@ -71,14 +71,14 @@ class ZutCalendarApp(App):
         try:
             await asyncio.to_thread(api.get_plan, True)
         except (api.MissingStudentId, ValueError) as e:
-            lconfig = config.Config()
+            config = io.Config()
             if isinstance(e, ValueError):
                 self.notify(_("Invalid student ID!"), severity="error")
-                lconfig.save_student_id(None)
+                config.save_student_id(None)
                 
             student_id = await self.app.push_screen_wait(LoginWindow())
             if student_id:
-                lconfig.save_student_id(student_id)
+                config.save_student_id(student_id)
                 self.action_refresh()
             return
 

@@ -1,4 +1,4 @@
-from zut_calendar import api, data, tui
+from zut_calendar import tui
 import argparse
 
 def main():
