@@ -68,7 +68,7 @@ def get_plan(force_refresh=False, week_offset=0):
 
         # if last_run is not this condition won't be met so we can just do nothing about it :D
 
-        if now.date() == last_run and cache.exists():
+        if last_run is not None and now.date() == last_run.date() and cache.exists():
            print(_("Last refresh was today, so I'm reading cache..."))
            return cache.get_cache()
 

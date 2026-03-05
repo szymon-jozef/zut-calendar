@@ -64,9 +64,9 @@ class ZutCalendarApp(App):
         yield Footer()
 
     @work
-    async def action_refresh(self):
+    async def action_refresh(self, force: bool):
         try:
-            await asyncio.to_thread(api.get_plan, True, self.week_offset)
+            await asyncio.to_thread(api.get_plan, force, self.week_offset)
         except (api.MissingStudentId, ValueError) as e:
             config = io.Config()
             if isinstance(e, ValueError):
@@ -76,7 +76,7 @@ class ZutCalendarApp(App):
             student_id = await self.app.push_screen_wait(LoginWindow())
             if student_id:
                 config.save_student_id(student_id)
-                self.action_refresh()
+                self.action_refresh(force)
             return
 
         await self.query_one("#main_calendar").remove()
@@ -85,15 +85,15 @@ class ZutCalendarApp(App):
 
     def action_prev_week(self):
         self.week_offset -= 1
-        self.action_refresh()
+        self.action_refresh(False)
 
     def action_next_week(self):
         self.week_offset += 1
-        self.action_refresh()
+        self.action_refresh(False)
 
     async def on_mount(self):
         self.bind(self.config.nav_quit, "quit", description=_("Quit app"))
-        self.bind(self.config.nav_refresh, "refresh", description=_("Refresh"))
+        self.bind(self.config.nav_refresh, "refresh(True)", description=_("Refresh"))
         self.bind(self.config.nav_prev_week, "prev_week", description=_("Week before"))
         self.bind(self.config.nav_next_week, "next_week", description=_("Week next"))
         self.bind(self.config.nav_left, "focus_left",description=_("Go left"))
