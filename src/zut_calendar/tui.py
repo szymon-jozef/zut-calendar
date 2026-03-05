@@ -6,7 +6,7 @@ import asyncio
 from textual.app import App, ComposeResult
 from textual.validation import Integer
 from textual.widgets import Input 
-from textual.containers import Horizontal, VerticalScroll, Center, Middle
+from textual.containers import Horizontal, Vertical, VerticalScroll, Center, Middle
 from textual.screen import ModalScreen
 from textual import work
 from textual.widgets import Footer, Header, Label, Placeholder, Static
@@ -117,6 +117,10 @@ class DayColumn(VerticalScroll):
             yield ClassEvent(event)
 
 class ClassEvent(Widget):
+    BINDINGS = [
+            ("enter", "show_details", _("Show details"))
+    ]
+
     def __init__(self, info: data.ClassEntry):
         super().__init__()
         self.data: data.ClassEntry = info
@@ -128,6 +132,12 @@ class ClassEvent(Widget):
         type_str = self.data.type.value if self.data.type else "Unknown"
         yield Label(type_str)
 
+    def on_click(self) -> None:
+         self.app.push_screen(DetailsScreen(self.data))
+
+    def action_show_details(self) -> None:
+        self.app.push_screen(DetailsScreen(self.data))
+
 class LoginWindow(ModalScreen[str]):
     def compose(self) -> ComposeResult:
         with Center():
@@ -137,6 +147,29 @@ class LoginWindow(ModalScreen[str]):
 
     def on_input_submitted(self, event: Input.Submitted):
         self.dismiss(event.value)
+
+class DetailsScreen(ModalScreen):
+    _config = io.Config()
+
+    BINDINGS = [
+            (_config.nav_quit, "close_screen", _("Close"))
+    ]
+
+    def __init__(self, class_entry: data.ClassEntry):
+        super().__init__()
+        self.class_entry = class_entry
+
+    def compose(self) -> ComposeResult:
+        with Vertical(id="details-dialog"):
+            yield Label(self.class_entry.description)
+            # TODO! finish this later
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#details-dialog").border_title = "Information"
+
+    def action_close_screen(self) -> None:
+        self.app.pop_screen()
 
 if __name__ == "__main__":
     app = ZutCalendarApp()

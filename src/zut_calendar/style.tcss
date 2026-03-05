@@ -15,3 +15,17 @@ ClassEvent:focus {
     border: round yellow;
     background: $accent-darken-2;
 }
+
+DetailsScreen {
+    align: center middle;
+    background: $background 50%;
+}
+
+#details-dialog {
+    width: 50%;
+    height: 70%;
+    border: solid red; 
+    border-title-color: yellow; 
+    background: $surface;
+    padding: 1;
+}
