@@ -65,7 +65,6 @@ class Cache:
     
     def get_cache(self) -> dict | list| None:
         if not self._cache_file.exists():
-            print("Cache file doesn't exists...")
             return None
 
         with open(self._cache_file, "r") as file:
@@ -96,11 +95,10 @@ class State:
 
     def get_last_run(self) -> datetime.datetime | None:
         if not self._state_file.exists():
-            print("State file doesn't exists...")
             return None
 
         with open(self._state_file, "r") as state_file:
             try:
                 return datetime.datetime.fromisoformat(json.load(state_file)["last_run"])
-            except Exception:
+            except (KeyError, ValueError, json.JSONDecodeError):
                 return None

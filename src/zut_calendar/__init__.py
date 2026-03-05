@@ -8,8 +8,9 @@ def main():
             )
 
     parser.add_argument('-f', '--force-refresh', action='store_true', help="Force refreshing of the schedule")
+    args = parser.parse_args()
 
-    app = tui.ZutCalendarApp()
+    app = tui.ZutCalendarApp(args.force_refresh)
     app.run()
 
 if __name__ == "__main__":

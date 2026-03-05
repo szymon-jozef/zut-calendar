@@ -1,6 +1,7 @@
 import os
 import gettext
 import requests
+import logging
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from urllib.parse import quote
@@ -69,7 +70,7 @@ def get_plan(force_refresh=False, week_offset=0):
         # if last_run is not this condition won't be met so we can just do nothing about it :D
 
         if last_run is not None and now.date() == last_run.date() and cache.exists():
-           print(_("Last refresh was today, so I'm reading cache..."))
+           logging.info(_("Last refresh was today, so I'm reading cache..."))
            return cache.get_cache()
 
     result = requests.get(_get_url(week_offset))
@@ -77,8 +78,8 @@ def get_plan(force_refresh=False, week_offset=0):
     try:
         result.raise_for_status()
     except HTTPError as e:
-        print(_("Error while getting http request: {}").format(e))
-        return None
+        logging.error(_("Error while getting http request: {}").format(e))
+        raise ValueError("HTTP Error")
 
     plan = result.json()
     cache.save_cache(plan)
