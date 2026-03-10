@@ -1,18 +1,13 @@
 import os
 import gettext
 
-from datetime import datetime, timedelta
-import asyncio
-from textual.app import App, ComposeResult
-from textual.validation import Integer
+from textual.app import  ComposeResult
 from textual.widgets import Input 
-from textual.containers import Horizontal, Vertical, VerticalScroll, Center, Middle
+from textual.containers import  Vertical, Center, Middle
 from textual.screen import ModalScreen
-from textual import work
-from textual.widgets import Footer, Header, Label, Placeholder, Static
-from textual.widget import Widget
-
-from zut_calendar import data, api, io
+from textual.widgets import Footer, Label
+from datetime import datetime
+from zut_calendar import data, io
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 localedir = os.path.join(current_dir, 'locales')
@@ -32,6 +27,8 @@ class DetailsScreen(ModalScreen):
     def compose(self) -> ComposeResult:
         with Vertical(id="details-dialog"):
             yield Label(self.class_entry.description)
+            yield Label(str(f"Początek: {datetime.fromisoformat(self.class_entry.start.replace(" ", "T"))}"))
+            yield Label(str(f"Koniec: {datetime.fromisoformat(self.class_entry.end.replace(" ", "T"))}"))
             # TODO! finish this later
         yield Footer()
 

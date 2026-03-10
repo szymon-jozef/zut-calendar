@@ -4,14 +4,15 @@ import gettext
 from datetime import datetime, timedelta
 import asyncio
 from textual.app import App, ComposeResult
-from textual.containers import Horizontal
+from textual.containers import Horizontal, VerticalScroll, Vertical
 from textual import work
+from textual.widget import Widget
 from textual.widgets import Footer, Header, Label
 
 from zut_calendar import data, api, io
 
 from .screens import LoginWindow
-from .widgets import DayColumn
+from .widgets import DayColumn, TimeColumn
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 localedir = os.path.join(current_dir, 'locales')
@@ -49,10 +50,20 @@ class ZutCalendarApp(App):
             await self._handle_login_error()
             return
                 
+        days = [_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday")]
+        header_labels = [Label(" ", id="time-spacer")] 
+        for d in days:
+            header_labels.append(Label(d, classes="header-day-label"))
+        
+        header_row = Horizontal(*header_labels, id="calendar-header")
+
         columns = self._build_columns(classes)
+        calendar_grid = Horizontal(*columns, id="calendar_grid")
+
+        full_view = Vertical(header_row, VerticalScroll(calendar_grid, id="calendar-scroll-area"), id="main-calendar-wrapper")
 
         await self.query_one("#main_calendar").remove()
-        await self.mount(Horizontal(*columns, id="main_calendar"))
+        await self.mount(full_view, before="Footer")
 
         if force: 
             self.notify(_("Calendar refreshed!"), title=_("Refreshed"), severity="information")
@@ -67,18 +78,16 @@ class ZutCalendarApp(App):
             config.save_student_id(student_id)
             self.action_refresh(True)
 
-    def _build_columns(self, classes) -> list:
+    def _build_columns(self, classes) -> list[Widget]:
         today = datetime.today()
         monday = today - timedelta(days=today.weekday()) + timedelta(weeks=self.week_offset)
-        days = [_("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"), _("Friday"), _("Saturday"), _("Sunday")]
-
-        columns = []
+        
+        columns: list[Widget] = [TimeColumn()]
         for i in range(7):
             current_day = monday + timedelta(days=i)
             date_str = current_day.strftime("%Y-%m-%d")
-            day_name = days[i]
             events_of_day = [e for e in classes if e.start and e.start.startswith(date_str)]
-            columns.append(DayColumn(day_name, events_of_day))
+            columns.append(DayColumn(events_of_day)) 
             
         return columns
 
