@@ -4,21 +4,19 @@ import gettext
 from datetime import datetime, timedelta
 import asyncio
 from textual.app import App, ComposeResult
-from textual.validation import Integer
-from textual.widgets import Input 
-from textual.containers import Horizontal, Vertical, VerticalScroll, Center, Middle
-from textual.screen import ModalScreen
+from textual.containers import Horizontal
 from textual import work
-from textual.widgets import Footer, Header, Label, Placeholder, Static
-from textual.widget import Widget
+from textual.widgets import Footer, Header, Label
 
 from zut_calendar import data, api, io
+
+from .screens import LoginWindow
+from .widgets import DayColumn
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 localedir = os.path.join(current_dir, 'locales')
 t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
 _ = t.gettext
-
 
 class ZutCalendarApp(App):
     CSS_PATH = "./style.tcss"
@@ -103,74 +101,3 @@ class ZutCalendarApp(App):
         self.bind(self.config.nav_right, "focus_right", description=_("Go right"))
 
         self.action_refresh(self.force)
-
-class DayColumn(VerticalScroll):
-    def __init__(self, day_name, events: list):
-        super().__init__()
-        self.day_name = day_name
-        self.events = events
-    
-    def compose(self) -> ComposeResult:
-        yield Label(self.day_name)
-
-        for event in self.events:
-            yield ClassEvent(event)
-
-class ClassEvent(Widget):
-    BINDINGS = [
-            ("enter", "show_details", _("Show details"))
-    ]
-
-    def __init__(self, info: data.ClassEntry):
-        super().__init__()
-        self.data: data.ClassEntry = info
-        self.can_focus = True
-
-    def compose(self):
-        yield Label(self.data.description)
-        yield Label(self.data.worker)
-        type_str = self.data.type.value if self.data.type else "Unknown"
-        yield Label(type_str)
-
-    def on_click(self) -> None:
-         self.app.push_screen(DetailsScreen(self.data))
-
-    def action_show_details(self) -> None:
-        self.app.push_screen(DetailsScreen(self.data))
-
-class LoginWindow(ModalScreen[str]):
-    def compose(self) -> ComposeResult:
-        with Center():
-            with Middle():
-                yield Label(_("Please enter your student ID"))
-                yield Input(id="student_id_input", type="integer", max_length=5)
-
-    def on_input_submitted(self, event: Input.Submitted):
-        self.dismiss(event.value)
-
-class DetailsScreen(ModalScreen):
-    _config = io.Config()
-
-    BINDINGS = [
-            (_config.nav_quit, "close_screen", _("Close"))
-    ]
-
-    def __init__(self, class_entry: data.ClassEntry):
-        super().__init__()
-        self.class_entry = class_entry
-
-    def compose(self) -> ComposeResult:
-        with Vertical(id="details-dialog"):
-            yield Label(self.class_entry.description)
-            # TODO! finish this later
-        yield Footer()
-
-    def on_mount(self) -> None:
-        self.query_one("#details-dialog").border_title = "Information"
-
-    def action_close_screen(self) -> None:
-        self.app.pop_screen()
-
-if __name__ == "__main__":
-    app = ZutCalendarApp()
-    app.run()
