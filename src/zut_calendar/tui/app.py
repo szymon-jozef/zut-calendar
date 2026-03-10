@@ -35,6 +35,9 @@ class ZutCalendarApp(App):
 
     @work(exclusive=True)
     async def action_refresh(self, force: bool):
+        self.query("#main-calendar-wrapper").remove()
+        self.query("#main_calendar").remove() 
+
         try:
             await self.query_one("#main_calendar").remove()
         except Exception:
@@ -62,7 +65,7 @@ class ZutCalendarApp(App):
 
         full_view = Vertical(header_row, VerticalScroll(calendar_grid, id="calendar-scroll-area"), id="main-calendar-wrapper")
 
-        await self.query_one("#main_calendar").remove()
+        self.query("#main_calendar").remove()
         await self.mount(full_view, before="Footer")
 
         if force: 
