@@ -78,9 +78,10 @@ As of now this project supports English and Polish. Your language will be select
 As of now it doesn't make any sense to translate this, because a lot will probably change. When I finish this I will be open for PRs.
 
 # TODO
-- [ ] Proper grid layout with hours shown
+- [x] Proper grid layout with hours shown
 - [ ] Focusing, moving around and checking specific class info
-- [ ] Checking other weeks than current
+- [x] Checking other weeks than current
+- [ ] Good styles
 
 ---
 *Project inspired by [zutui](https://github.com/shv187/zutui)
