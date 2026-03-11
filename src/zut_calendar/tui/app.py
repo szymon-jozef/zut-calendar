@@ -56,6 +56,7 @@ class ZutCalendarApp(App):
 
         columns = self._build_columns(classes)
         calendar_grid = Horizontal(*columns, id="calendar_grid")
+        calendar_grid.styles.height = "auto";
 
         full_view = Vertical(header_row, VerticalScroll(calendar_grid, id="calendar-scroll-area"), id="main-calendar-wrapper")
 

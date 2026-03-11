@@ -1,6 +1,6 @@
 from datetime import datetime
 from textual.app import ComposeResult
-from textual.containers import Vertical, Container, VerticalScroll
+from textual.containers import Vertical, Container
 from textual.widgets import Label
 from textual.widget import Widget
 
@@ -36,6 +36,7 @@ class DayColumn(Vertical):
     def on_mount(self):
         self.styles.width = "1fr"
         self.styles.min_width = 25
+        self.styles.height = "auto"
     
     def compose(self) -> ComposeResult:
         with EventContainer():
