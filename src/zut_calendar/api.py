@@ -1,5 +1,3 @@
-import os
-import gettext
 import requests
 import logging
 from datetime import datetime, timedelta
@@ -8,11 +6,9 @@ from urllib.parse import quote
 from requests.models import HTTPError
 
 from zut_calendar import io
+from . import utils
 
-current_dir = os.path.abspath(os.path.dirname(__file__))
-localedir = os.path.join(current_dir, 'locales')
-t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
-_ = t.gettext
+_ = utils.get_locale_thing()
 
 class MissingStudentId(Exception):
     pass

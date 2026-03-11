@@ -1,11 +1,7 @@
 from enum import Enum
-import gettext
-import os
+from . import utils
 
-current_dir = os.path.abspath(os.path.dirname(__file__))
-localedir = os.path.join(current_dir, 'locales')
-t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
-_ = t.gettext
+_ = utils.get_locale_thing()
 
 class ClassType(Enum):
     W = _("lecture")

@@ -1,18 +1,13 @@
-import os
-import gettext
-
 from textual.app import  ComposeResult
 from textual.widgets import Input 
 from textual.containers import  Vertical, Center, Middle
 from textual.screen import ModalScreen
 from textual.widgets import Footer, Label
 from datetime import datetime
-from zut_calendar import data, io
+from zut_calendar import data, io, utils
 
-current_dir = os.path.abspath(os.path.dirname(__file__))
-localedir = os.path.join(current_dir, 'locales')
-t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
-_ = t.gettext
+_ = utils.get_locale_thing()
+
 class DetailsScreen(ModalScreen):
     _config = io.Config()
 

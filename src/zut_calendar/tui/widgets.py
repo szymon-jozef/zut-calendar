@@ -1,19 +1,12 @@
-import os
-import gettext
-
 from datetime import datetime
 from textual.app import ComposeResult
 from textual.containers import Vertical, Container, VerticalScroll
 from textual.widgets import Label
 from textual.widget import Widget
 
-from zut_calendar import data
+from zut_calendar import data, utils
 
-current_dir = os.path.abspath(os.path.dirname(__file__))
-localedir = os.path.join(current_dir, 'locales')
-t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
-_ = t.gettext
-
+_ = utils.get_locale_thing()
 
 SCALE = 4
 START_HOUR = 8

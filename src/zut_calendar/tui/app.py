@@ -1,6 +1,3 @@
-import os
-import gettext
-
 from datetime import datetime, timedelta
 import asyncio
 from textual.app import App, ComposeResult
@@ -9,15 +6,12 @@ from textual import work
 from textual.widget import Widget
 from textual.widgets import Footer, Header, Label
 
-from zut_calendar import data, api, io
+from zut_calendar import data, api, io, utils
 
 from .screens import LoginWindow
 from .widgets import DayColumn, TimeColumn
 
-current_dir = os.path.abspath(os.path.dirname(__file__))
-localedir = os.path.join(current_dir, 'locales')
-t = gettext.translation('zut_calendar', localedir=localedir, fallback=True)
-_ = t.gettext
+_ = utils.get_locale_thing()
 
 class ZutCalendarApp(App):
     CSS_PATH = "./style.tcss"
