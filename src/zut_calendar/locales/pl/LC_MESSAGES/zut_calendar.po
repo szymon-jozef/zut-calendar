@@ -1,17 +1,9 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 16:59+0100\n"
+"POT-Creation-Date: 2026-03-11 18:37+0100\n"
 "Language: pl\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-
-#: src/zut_calendar/tui/screens.py:15
-msgid "Close"
-msgstr "Zamknij"
-
-#: src/zut_calendar/tui/screens.py:40
-msgid "Please enter your student ID"
-msgstr "Proszę podać numer indeksu"
 
 #: src/zut_calendar/tui/app.py:27
 msgid "Loading..."
@@ -61,67 +53,63 @@ msgstr "Odświeżono"
 msgid "Invalid student ID or missing data!"
 msgstr "Niepoprawny numer indeksu lub brak danych!"
 
-#: src/zut_calendar/tui/app.py:135
+#: src/zut_calendar/tui/app.py:137
 msgid "Quit app"
 msgstr "Wyjdź z aplikacji"
 
-#: src/zut_calendar/tui/app.py:136
+#: src/zut_calendar/tui/app.py:138
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: src/zut_calendar/tui/app.py:137
+#: src/zut_calendar/tui/app.py:139
 msgid "Week before"
 msgstr "Poprzedni tydzień"
 
-#: src/zut_calendar/tui/app.py:138
+#: src/zut_calendar/tui/app.py:140
 msgid "Week next"
 msgstr "Następny tydzień"
 
-#: src/zut_calendar/tui/app.py:140
+#: src/zut_calendar/tui/app.py:142
 msgid "Go left"
 msgstr "W lewo"
 
-#: src/zut_calendar/tui/app.py:141
+#: src/zut_calendar/tui/app.py:143
 msgid "Go up"
 msgstr "W górę"
 
-#: src/zut_calendar/tui/app.py:143
+#: src/zut_calendar/tui/app.py:145
 msgid "Go down"
 msgstr "W dół"
 
-#: src/zut_calendar/tui/app.py:144
+#: src/zut_calendar/tui/app.py:146
 msgid "Go right"
 msgstr "W prawo"
 
-#: src/zut_calendar/tui/widgets.py:26
+#: src/zut_calendar/tui/screens.py:15
+msgid "Close"
+msgstr "Zamknij"
+
+#: src/zut_calendar/tui/screens.py:38
+msgid "Please enter your student ID"
+msgstr "Proszę podać numer indeksu"
+
+#: src/zut_calendar/tui/widgets.py:27
 msgid "Current week"
 msgstr "Aktualny tydzień"
 
-#: src/zut_calendar/tui/widgets.py:28
+#: src/zut_calendar/tui/widgets.py:29
 #, python-brace-format
 msgid "{} week(s) into the future"
 msgstr "{} tyg. w przyszłość"
 
-#: src/zut_calendar/tui/widgets.py:30
+#: src/zut_calendar/tui/widgets.py:31
 #, python-brace-format
 msgid "{} week(s) into the past"
 msgstr "{} tyg. temu"
 
-#: src/zut_calendar/tui/widgets.py:69
+#: src/zut_calendar/tui/widgets.py:72
 msgid "Show details"
 msgstr "Pokaż szczegóły"
-
-#: src/zut_calendar/data.py:7
-msgid "lecture"
-msgstr "wykład"
-
-#: src/zut_calendar/data.py:8
-msgid "auditorium"
-msgstr "audytorium"
-
-#: src/zut_calendar/data.py:9
-msgid "laboratory"
-msgstr "laboratorium"
 
 #: src/zut_calendar/api.py:43
 msgid "No student id found"
@@ -134,9 +122,51 @@ msgstr "Niepoprawny format numeru indeksu"
 #: src/zut_calendar/api.py:69
 #, python-brace-format
 msgid "Last refresh was less than 2h ago ({:.0f} min), reading cache..."
-msgstr "Ostatnie odświeżenie miało miejsce mniej niż 2h temu ({:.0f} min), wczytywanie z pamięci podręcznej..."
+msgstr ""
+"Ostatnie odświeżenie miało miejsce mniej niż 2h temu ({:.0f} min), "
+"wczytywanie z pamięci podręcznej..."
 
 #: src/zut_calendar/api.py:77
 #, python-brace-format
 msgid "Error while getting http request: {}"
 msgstr "Błąd podczas zapytania http: {}"
+
+#: src/zut_calendar/data.py:8
+msgid "lecture"
+msgstr "wykład"
+
+#: src/zut_calendar/data.py:9
+msgid "auditorium"
+msgstr "audytorium"
+
+#: src/zut_calendar/data.py:10
+msgid "laboratory"
+msgstr "laboratorium"
+
+#: src/zut_calendar/data.py:25
+msgid "Unknown type"
+msgstr ""
+
+#: src/zut_calendar/data.py:31
+msgid "Title"
+msgstr "Tytuł"
+
+#: src/zut_calendar/data.py:32
+msgid "Description"
+msgstr "Opis"
+
+#: src/zut_calendar/data.py:33
+msgid "Time"
+msgstr "Czas"
+
+#: src/zut_calendar/data.py:34
+msgid "Worker"
+msgstr "Pracownik"
+
+#: src/zut_calendar/data.py:35
+msgid "Room"
+msgstr "Sala"
+
+#: src/zut_calendar/data.py:36
+msgid "Type"
+msgstr "Typ"
