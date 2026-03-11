@@ -88,8 +88,6 @@ class ClassEvent(Widget):
         yield Label(pretty_time, classes="time-label")
         yield Label(self.data.worker)
         yield Label(self.data.room)
-        type_str = self.data.type.value if self.data.type else "Unknown"
-        yield Label(type_str)
 
     def on_mount(self):
         SCALE, START_HOUR, _ = _get_info()
