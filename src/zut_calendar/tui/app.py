@@ -9,7 +9,7 @@ from textual.widgets import Footer, Header, Label
 from zut_calendar import data, api, io, utils
 
 from .screens import LoginWindow
-from .widgets import DayColumn, TimeColumn, ClassEvent
+from .widgets import DateRow, DayColumn, TimeColumn, ClassEvent
 
 _ = utils.get_locale_thing()
 
@@ -53,12 +53,14 @@ class ZutCalendarApp(App):
             header_labels.append(Label(d, classes="header-day-label"))
         
         header_row = Horizontal(*header_labels, id="calendar-header")
+        date_info_row = DateRow(self.week_offset)
 
         columns = self._build_columns(classes)
         calendar_grid = Horizontal(*columns, id="calendar_grid")
         calendar_grid.styles.height = "auto";
 
-        full_view = Vertical(header_row, VerticalScroll(calendar_grid, id="calendar-scroll-area"), id="main-calendar-wrapper")
+
+        full_view = Vertical(header_row, date_info_row, VerticalScroll(calendar_grid, id="calendar-scroll-area"), id="main-calendar-wrapper")
 
         self.query("#main_calendar").remove()
         await self.mount(full_view, before="Footer")

@@ -1,7 +1,7 @@
 from datetime import datetime
 from textual.app import ComposeResult
 from textual.containers import Vertical, Container
-from textual.widgets import Label
+from textual.widgets import Label, Static
 from textual.widget import Widget
 
 from zut_calendar import data, utils
@@ -11,6 +11,22 @@ _ = utils.get_locale_thing()
 SCALE = 4
 START_HOUR = 8
 END_HOUR = 21
+
+class DateRow(Static):
+    def __init__(self, week_offset: int) -> None:
+        super().__init__()
+        self.week_offset = week_offset
+    
+    def on_mount(self) -> None:
+        weeks_abs = abs(self.week_offset)
+        if self.week_offset == 0:
+            text = _("Current week")
+        elif self.week_offset > 0:
+            text = _("{} week(s) into the future").format(weeks_abs)
+        else:
+            text = _("{} week(s) into the past").format(weeks_abs)
+        
+        self.update(text)
 
 class TimeColumn(Widget):
     def compose(self) -> ComposeResult:

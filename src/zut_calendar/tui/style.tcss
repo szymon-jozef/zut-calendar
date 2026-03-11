@@ -44,6 +44,17 @@ ClassEvent:focus {
     text-style: bold;
 }
 
+DateRow {
+    background: $surface-lighten-1;
+    color: $secondary;
+    height: 3;
+    content-align: center middle;
+    text-style: bold italic;
+    text-align: center;
+    border-bottom: tall $primary 50%;
+    margin-bottom: 1;
+}
+
 .type-w { 
     background: #1e90ff 20%;
     border: tall #1e90ff; 
