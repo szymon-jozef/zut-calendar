@@ -132,7 +132,7 @@ class ZutCalendarApp(App):
         self.all_events[self.focused_event_index].focus()
 
     async def on_mount(self):
-        self.title = "Zut Calenda "
+        self.title = "Zut Calendar"
 
         self.bind(self.config.nav["quit"], "quit", description=_("Quit app"))
         self.bind(self.config.nav["refresh"], "refresh(True)", description=_("Refresh"))
