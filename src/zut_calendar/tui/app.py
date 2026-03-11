@@ -107,14 +107,26 @@ class ZutCalendarApp(App):
         self.action_refresh(False)
 
     def action_focus_next(self):
-        if hasattr(self, 'all_events') and self.all_events:
-            self.focused_event_index = (self.focused_event_index + 1) % len(self.all_events)
-            self.all_events[self.focused_event_index].focus()
+        if not hasattr(self, 'all_events') and self.all_events:
+            return
+        try:
+            current_index = self.all_events.index(self.focused)
+            self.focused_event_index = (current_index + 1) % len(self.all_events)
+        except (ValueError, AttributeError):
+            self.focused_event_index = 0
+
+        self.all_events[self.focused_event_index].focus()
 
     def action_focus_prev(self):
-        if hasattr(self, 'all_events') and self.all_events:
-            self.focused_event_index = (self.focused_event_index - 1) % len(self.all_events)
-            self.all_events[self.focused_event_index].focus()
+        if not hasattr(self, 'all_events') and self.all_events:
+            return
+        try:
+            current_index = self.all_events.index(self.focused)
+            self.focused_event_index = (current_index - 1) % len(self.all_events)
+        except (ValueError, AttributeError):
+            self.focused_event_index = 0
+
+        self.all_events[self.focused_event_index].focus()
 
     async def on_mount(self):
         self.bind(self.config.nav_quit, "quit", description=_("Quit app"))
