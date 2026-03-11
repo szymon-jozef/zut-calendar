@@ -10,7 +10,7 @@ This project aims to improve the life of ZUT students that love the terminal!
 If you're tired of checking `https://plan.zut.edu.pl/` every day and don't like classic calendar integration, it's something for you.
 
 
-*state of project as of 4.03.2026 with class info redacted*
+*state of project as of 11.03.2026 with class info redacted*
 ![Screenshot](./assets/screenshot.png)
 
 # Supported platforms
@@ -85,6 +85,7 @@ As of now it doesn't make any sense to translate this, because a lot will probab
 - [x] Focusing, moving around and checking specific class info (kinda)
 - [x] Checking other weeks than current
 - [x] Good styles (i guess)
+- [ ] Checking teachers schedule by name
 
 ---
 *Project inspired by [zutui](https://github.com/shv187/zutui)
