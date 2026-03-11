@@ -34,28 +34,27 @@
 ClassEvent {
     padding: 0 1;
     margin: 0;
-    border: tall $background;
+    border: tall transparent; 
+    background: $surface;
 }
 
 ClassEvent:focus {
-    border: tall $accent;
-    background: $accent 10%;
+    border: tall $accent !important;
+    background: $accent 30% !important;
+    text-style: bold;
 }
 
 .type-w { 
     background: #1e90ff 20%;
     border: tall #1e90ff; 
-    color: white;
 }
 
 .type-l { 
     background: #2ecc71 20%;
     border: tall #2ecc71; 
-    color: white;
 }
 
 .type-a { 
     background: #f1c40f 20%;
     border: tall #f1c40f; 
-    color: white;
 }

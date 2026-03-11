@@ -78,9 +78,6 @@ class ClassEvent(Widget):
             self.styles.height = max(2, height) 
             self.styles.width = "100%"
             
-            self.styles.border = ("round", "gray")
-            self.styles.background = "dodgerblue 20%"
-            
         except Exception:
             pass
 

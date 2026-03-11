@@ -9,7 +9,7 @@ from textual.widgets import Footer, Header, Label
 from zut_calendar import data, api, io, utils
 
 from .screens import LoginWindow
-from .widgets import DayColumn, TimeColumn
+from .widgets import DayColumn, TimeColumn, ClassEvent
 
 _ = utils.get_locale_thing()
 
@@ -63,6 +63,15 @@ class ZutCalendarApp(App):
         self.query("#main_calendar").remove()
         await self.mount(full_view, before="Footer")
 
+        self.all_events = []
+        for col in columns:
+            if isinstance(col, DayColumn):
+                events_in_col = col.query(ClassEvent)
+                self.all_events.extend(list(events_in_col))
+
+        self.all_events.sort(key=lambda x: x.data.start)
+        self.focused_event_index = 0
+
         if force: 
             self.notify(_("Calendar refreshed!"), title=_("Refreshed"), severity="information")
 
@@ -97,14 +106,26 @@ class ZutCalendarApp(App):
         self.week_offset += 1
         self.action_refresh(False)
 
+    def action_focus_next(self):
+        if hasattr(self, 'all_events') and self.all_events:
+            self.focused_event_index = (self.focused_event_index + 1) % len(self.all_events)
+            self.all_events[self.focused_event_index].focus()
+
+    def action_focus_prev(self):
+        if hasattr(self, 'all_events') and self.all_events:
+            self.focused_event_index = (self.focused_event_index - 1) % len(self.all_events)
+            self.all_events[self.focused_event_index].focus()
+
     async def on_mount(self):
         self.bind(self.config.nav_quit, "quit", description=_("Quit app"))
         self.bind(self.config.nav_refresh, "refresh(True)", description=_("Refresh"))
         self.bind(self.config.nav_prev_week, "prev_week", description=_("Week before"))
         self.bind(self.config.nav_next_week, "next_week", description=_("Week next"))
-        self.bind(self.config.nav_left, "focus_left",description=_("Go left"))
-        self.bind(self.config.nav_down, "focus_down",description=_( "Go down"))
-        self.bind(self.config.nav_up, "focus_up", description=_("Go up"))
-        self.bind(self.config.nav_right, "focus_right", description=_("Go right"))
+        
+        self.bind(self.config.nav_left, "focus_prev", description=_("Go left"))
+        self.bind(self.config.nav_up, "focus_prev", description=_("Go up"))
+        
+        self.bind(self.config.nav_down, "focus_next", description=_("Go down"))
+        self.bind(self.config.nav_right, "focus_next", description=_("Go right"))
 
         self.action_refresh(self.force)
