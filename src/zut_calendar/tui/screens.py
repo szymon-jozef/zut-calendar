@@ -12,7 +12,7 @@ class DetailsScreen(ModalScreen):
     _config = io.Config()
 
     BINDINGS = [
-            (_config.nav_quit, "close_screen", _("Close"))
+            (_config.nav["quit"], "close_screen", _("Close"))
     ]
 
     def __init__(self, class_entry: data.ClassEntry):

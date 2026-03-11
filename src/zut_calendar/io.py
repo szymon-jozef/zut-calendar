@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 import appdirs
 import datetime
+import shutil
 from pathlib import Path
 import json
 
@@ -15,46 +16,48 @@ class Config:
         self._config_dir.mkdir(parents=True, exist_ok=True)
         self._config_file = self._config_dir / "config.ini"
 
-        self._config_parser.read(self._config_file)
-        needs_save = False
+        if not self._config_file.exists():
+            self._copy_default_config()
 
-        if not self._config_parser.has_section("navigation"):
-            self._config_parser.add_section("navigation")
-            self._config_parser.set("navigation", "up", "k")
-            self._config_parser.set("navigation", "down", "j")
-            self._config_parser.set("navigation", "left", "h")
-            self._config_parser.set("navigation", "right", "l")
-            self._config_parser.set("navigation", "next_week", "L")
-            self._config_parser.set("navigation", "prev_week", "H")
-            self._config_parser.set("navigation", "refresh", "f5")
-            self._config_parser.set("navigation", "quit", "q")
-            needs_save = True
-        if needs_save:
-            with open(self._config_file, "w") as config_file:
-                self._config_parser.write(config_file)
+        self._config_parser.read(self._config_file)
+
+        if not self._config_parser.has_section("user"):
+            self._config_parser.add_section("user")
 
         self.read_config()
 
 
     def read_config(self) -> None:
         self.student_id = self._config_parser.get("user","student_id", fallback=None)
-        self.nav_up = self._config_parser.get("navigation", "up", fallback="k")
-        self.nav_down = self._config_parser.get("navigation", "down", fallback="j")
-        self.nav_left = self._config_parser.get("navigation", "left", fallback="h")
-        self.nav_right = self._config_parser.get("navigation", "right", fallback="l")
-        self.nav_next_week = self._config_parser.get("navigation", "next_week", fallback="L")
-        self.nav_prev_week = self._config_parser.get("navigation", "prev_week", fallback="H")
-        self.nav_refresh = self._config_parser.get("navigation", "refresh", fallback="f5")
-        self.nav_quit = self._config_parser.get("navigation", "quit", fallback="q")
+        self.nav = {
+                "up" : self._config_parser.get("navigation", "up", fallback="k"),
+                "down" : self._config_parser.get("navigation", "down", fallback="j"),
+                "left" : self._config_parser.get("navigation", "left", fallback="h"),
+                "right" : self._config_parser.get("navigation", "right", fallback="l"),
+                "next_week" : self._config_parser.get("navigation", "next_week", fallback="L"),
+                "prev_week" : self._config_parser.get("navigation", "prev_week", fallback="H"),
+                "refresh" : self._config_parser.get("navigation", "refresh", fallback="f5"),
+                "quit" : self._config_parser.get("navigation", "quit", fallback="q")
+                }
 
-    def save_student_id(self, student_id: str | int | None) -> None:
-        if not self._config_parser.has_section("user"):
-            self._config_parser.add_section("user")
-
+    def save_student_id(self, student_id: str | int) -> None:
         self._config_parser.set("user", "student_id", str(student_id))
 
         with open(self._config_file, "w") as configfile:
             self._config_parser.write(configfile)
+
+    def _copy_default_config(self) -> None:
+        try:
+            source_path = Path(__file__).parent / "examples" / "config.ini"
+            
+            if source_path.exists():
+                shutil.copy(source_path, self._config_file)
+            else:
+                self._config_parser.add_section("navigation")
+                with open(self._config_file, "w") as f:
+                    self._config_parser.write(f)
+        except Exception:
+            pass
 
 
 class Cache:

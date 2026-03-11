@@ -80,11 +80,12 @@ class ZutCalendarApp(App):
     async def _handle_login_error(self):
         self.notify(_("Invalid student ID or missing data!"), severity="error")
         config = io.Config()
-        config.save_student_id(None)
         
-        student_id = await self.push_screen(LoginWindow())
+        student_id = await self.push_screen_wait(LoginWindow())
+
         if student_id:
             config.save_student_id(student_id)
+            self.config.read_config()
             self.action_refresh(True)
 
     def _build_columns(self, classes) -> list[Widget]:
@@ -131,15 +132,15 @@ class ZutCalendarApp(App):
         self.all_events[self.focused_event_index].focus()
 
     async def on_mount(self):
-        self.bind(self.config.nav_quit, "quit", description=_("Quit app"))
-        self.bind(self.config.nav_refresh, "refresh(True)", description=_("Refresh"))
-        self.bind(self.config.nav_prev_week, "prev_week", description=_("Week before"))
-        self.bind(self.config.nav_next_week, "next_week", description=_("Week next"))
+        self.bind(self.config.nav["quit"], "quit", description=_("Quit app"))
+        self.bind(self.config.nav["refresh"], "refresh(True)", description=_("Refresh"))
+        self.bind(self.config.nav["prev_week"], "prev_week", description=_("Week before"))
+        self.bind(self.config.nav["next_week"], "next_week", description=_("Week next"))
         
-        self.bind(self.config.nav_left, "focus_prev", description=_("Go left"))
-        self.bind(self.config.nav_up, "focus_prev", description=_("Go up"))
+        self.bind(self.config.nav["left"], "focus_prev", description=_("Go left"))
+        self.bind(self.config.nav["up"], "focus_prev", description=_("Go up"))
         
-        self.bind(self.config.nav_down, "focus_next", description=_("Go down"))
-        self.bind(self.config.nav_right, "focus_next", description=_("Go right"))
+        self.bind(self.config.nav["down"], "focus_next", description=_("Go down"))
+        self.bind(self.config.nav["right"], "focus_next", description=_("Go right"))
 
         self.action_refresh(self.force)
