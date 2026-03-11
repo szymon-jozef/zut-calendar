@@ -24,6 +24,9 @@ class Config:
         if not self._config_parser.has_section("user"):
             self._config_parser.add_section("user")
 
+        if not self._config_parser.has_section("looks"):
+            self._config_parser.add_section("looks")
+
         self.read_config()
 
 
@@ -38,6 +41,9 @@ class Config:
                 "prev_week" : self._config_parser.get("navigation", "prev_week", fallback="H"),
                 "refresh" : self._config_parser.get("navigation", "refresh", fallback="f5"),
                 "quit" : self._config_parser.get("navigation", "quit", fallback="q")
+                }
+        self.looks = {
+                "scale" : self._config_parser.get("looks", "scale", fallback="4")
                 }
 
     def save_student_id(self, student_id: str | int) -> None:

@@ -4,13 +4,16 @@ from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
 from textual.widget import Widget
 
-from zut_calendar import data, utils
+from zut_calendar import data, utils, io
 
 _ = utils.get_locale_thing()
 
-SCALE = 4
-START_HOUR = 8
-END_HOUR = 21
+def _get_info() -> tuple[int, int, int]:
+    config = io.Config()
+    SCALE = int(config.looks["scale"])
+    START_HOUR = 8
+    END_HOUR = 21
+    return (SCALE, START_HOUR, END_HOUR)
 
 class DateRow(Static):
     def __init__(self, week_offset: int) -> None:
@@ -30,6 +33,7 @@ class DateRow(Static):
 
 class TimeColumn(Widget):
     def compose(self) -> ComposeResult:
+        SCALE, START_HOUR, END_HOUR = _get_info()
         for hour in range(START_HOUR, END_HOUR + 1):
             lbl = Label(f"{hour:02}:00")
             lbl.styles.height = SCALE
@@ -40,6 +44,7 @@ class TimeColumn(Widget):
 
 class EventContainer(Container):
     def on_mount(self):
+        SCALE, START_HOUR, END_HOUR = _get_info()
         self.styles.height = (END_HOUR - START_HOUR + 1) * SCALE
         self.styles.position = "relative"
         self.styles.width = "100%"
@@ -76,6 +81,8 @@ class ClassEvent(Widget):
         yield Label(type_str)
 
     def on_mount(self):
+        SCALE, START_HOUR, _ = _get_info()
+
         try:
             if self.data.type:
                 self.add_class(f"type-{self.data.type.name.lower()}")
