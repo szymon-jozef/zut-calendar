@@ -1,5 +1,5 @@
 import requests
-import logging
+from textual import log
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from urllib.parse import quote
@@ -66,7 +66,7 @@ def get_plan(force_refresh=False, week_offset=0):
         if last_run is not None and  cache.exists():
             time_diff = now - last_run
             if time_diff < timedelta(hours=2):
-                logging.info(_("Last refresh was less than 2h ago ({:.0f} min), reading cache...").format(time_diff.total_seconds() / 60))
+                log.info(_("Last refresh was less than 2h ago ({:.0f} min), reading cache...").format(time_diff.total_seconds() / 60))
                 return cache.get_cache()
 
     result = requests.get(_get_url(week_offset))
@@ -74,7 +74,7 @@ def get_plan(force_refresh=False, week_offset=0):
     try:
         result.raise_for_status()
     except HTTPError as e:
-        logging.error(_("Error while getting http request: {}").format(e))
+        log.error(_("Error while getting http request: {}").format(e))
         raise ValueError("HTTP Error")
 
     plan = result.json()

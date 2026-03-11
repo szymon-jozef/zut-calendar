@@ -75,6 +75,7 @@
           default = pkgs.mkShell {
             packages = [
               virtualenv
+              pkgs.python313Packages.textual-dev
               pkgs.uv
               pkgs.gettext
             ];
