@@ -31,41 +31,48 @@
     height: auto;
 }
 
-ClassEvent {
-    padding: 0 1;
-    margin: 0;
-    border: tall transparent; 
-    background: $surface;
-}
-
-ClassEvent:focus {
-    border: tall $accent !important;
-    background: $accent 30% !important;
-    text-style: bold;
-}
-
 DateRow {
     background: $surface-lighten-1;
     color: $secondary;
     height: 3;
     content-align: center middle;
     text-style: bold italic;
-    text-align: center;
     border-bottom: tall $primary 50%;
     margin-bottom: 1;
 }
 
+/* --- Events --- */
+
+ClassEvent {
+    padding: 0 1;
+    margin: 0;
+    margin-bottom: 1; 
+    border: tall transparent; 
+    background: $surface;
+}
+
+ClassEvent:hover {
+    border: tall $secondary 50%;
+}
+
+ClassEvent:focus {
+    border: tall $accent !important;
+    background: $accent 30% !important;
+    text-style: bold;
+    tint: $text 10%;
+}
+
 .type-w { 
-    background: #1e90ff 20%;
-    border: tall #1e90ff; 
+    background: #247c84 40%;
+    border: tall #30cedb; 
 }
 
 .type-l { 
-    background: #2ecc71 20%;
+    background: #1a8238 40%;
     border: tall #2ecc71; 
 }
 
 .type-a { 
-    background: #f1c40f 20%;
-    border: tall #f1c40f; 
+    background: #007bb0 40%;
+    border: tall #00bfff; 
 }

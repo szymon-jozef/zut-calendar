@@ -132,6 +132,8 @@ class ZutCalendarApp(App):
         self.all_events[self.focused_event_index].focus()
 
     async def on_mount(self):
+        self.title = "Zut Calenda "
+
         self.bind(self.config.nav["quit"], "quit", description=_("Quit app"))
         self.bind(self.config.nav["refresh"], "refresh(True)", description=_("Refresh"))
         self.bind(self.config.nav["prev_week"], "prev_week", description=_("Week before"))
@@ -144,3 +146,4 @@ class ZutCalendarApp(App):
         self.bind(self.config.nav["right"], "focus_next", description=_("Go right"))
 
         self.action_refresh(self.force)
+
