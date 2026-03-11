@@ -63,11 +63,11 @@ def get_plan(force_refresh=False, week_offset=0):
         state = io.State()
         last_run = state.get_last_run()
 
-        # if last_run is not this condition won't be met so we can just do nothing about it :D
-
-        if last_run is not None and now.date() == last_run.date() and cache.exists():
-           logging.info(_("Last refresh was today, so I'm reading cache..."))
-           return cache.get_cache()
+        if last_run is not None and  cache.exists():
+            time_diff = now - last_run
+            if time_diff < timedelta(hours=2):
+                logging.info(_("Last refresh was less than 2h ago ({:.0f} min), reading cache...").format(time_diff.total_seconds() / 60))
+                return cache.get_cache()
 
     result = requests.get(_get_url(week_offset))
 
