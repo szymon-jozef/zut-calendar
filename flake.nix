@@ -84,7 +84,7 @@
               UV_PYTHON_DOWNLOADS = "never";
             };
             shellHook = ''
-              unset PYTHONPATH
+              unsete PYTHONPATH
               export REPO_ROOT=$(git rev-parse --show-toplevel)
             '';
           };
