@@ -88,8 +88,6 @@ As of now this project supports English and Polish. Your language will be select
 *and restart your shell*
 
 ## Translating to other languages
-As of now it doesn't make any sense to translate this, because a lot will probably change. When I finish this I will be open for PRs.
-To make a translation:
 1. Create a directory for your language: `mkdir -p src/zut_calendar/locales/<your-lang>/LC_MESSAGES`
 2. Edit `update_lang.sh` to take into account your language. For example, if you want to add french (for whatever reason add these lines)
 ```bash
