@@ -76,6 +76,7 @@
             packages = [
               virtualenv
               pkgs.uv
+              pkgs.gettext
             ];
             env = {
               UV_NO_SYNC = "1";

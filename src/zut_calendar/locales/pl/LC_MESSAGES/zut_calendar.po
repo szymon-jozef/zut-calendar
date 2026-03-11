@@ -1,83 +1,142 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-04 20:01+0100\n"
+"POT-Creation-Date: 2026-03-11 16:59+0100\n"
 "Language: pl\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/zut_calendar/api.py:46
-msgid "No student id found"
-msgstr "Nie znaleziono numeru indeksu"
+#: src/zut_calendar/tui/screens.py:15
+msgid "Close"
+msgstr "Zamknij"
 
-#: src/zut_calendar/api.py:51
-msgid "Invalid student ID format"
-msgstr "Niepoprawny format numeru indeksu"
+#: src/zut_calendar/tui/screens.py:40
+msgid "Please enter your student ID"
+msgstr "Proszę podać numer indeksu"
 
-#: src/zut_calendar/api.py:66
-msgid "Last refresh was today, so I'm reading cache..."
-msgstr "Ostatnio odświeżano dzisiaj, więc czytam pamięć podręczną..."
+#: src/zut_calendar/tui/app.py:27
+msgid "Loading..."
+msgstr "Ładowanie..."
 
-#: src/zut_calendar/api.py:74
-#, python-brace-format
-msgid "Error while getting http request: {}"
-msgstr "Błąd podczas zapytania http: {}"
+#: src/zut_calendar/tui/app.py:39
+msgid "Loading schedule..."
+msgstr "Ładowanie planu..."
 
-#: src/zut_calendar/tui.py:26
-msgid "Quit app"
-msgstr "Wyjdź z aplikacji"
-
-#: src/zut_calendar/tui.py:27
-msgid "Refresh"
-msgstr "Odśwież"
-
-#: src/zut_calendar/tui.py:38
-msgid "No student ID found."
-msgstr "Nie znaleziono numer indeksu."
-
-#: src/zut_calendar/tui.py:40
-msgid "Invalid student ID"
-msgstr "Niepoprawny numer indeksu"
-
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Tuesday"
 msgstr "Wtorek"
 
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Wednesday"
 msgstr "Środa"
 
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Thursday"
 msgstr "Czwartek"
 
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Friday"
 msgstr "Piątek"
 
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Saturday"
 msgstr "Sobota"
 
-#: src/zut_calendar/tui.py:44
+#: src/zut_calendar/tui/app.py:50
 msgid "Sunday"
 msgstr "Niedziela"
 
-#: src/zut_calendar/tui.py:76
-msgid "Invalid student ID!"
-msgstr "Niepoprawny numer indeksu!"
-
-#: src/zut_calendar/tui.py:87
+#: src/zut_calendar/tui/app.py:78
 msgid "Calendar refreshed!"
 msgstr "Kalendarz został odświeżony!"
 
-#: src/zut_calendar/tui.py:87
+#: src/zut_calendar/tui/app.py:78
 msgid "Refreshed"
 msgstr "Odświeżono"
 
-#: src/zut_calendar/tui.py:118
-msgid "Please enter your student ID"
-msgstr "Proszę podać numer indeksu"
+#: src/zut_calendar/tui/app.py:81
+msgid "Invalid student ID or missing data!"
+msgstr "Niepoprawny numer indeksu lub brak danych!"
+
+#: src/zut_calendar/tui/app.py:135
+msgid "Quit app"
+msgstr "Wyjdź z aplikacji"
+
+#: src/zut_calendar/tui/app.py:136
+msgid "Refresh"
+msgstr "Odśwież"
+
+#: src/zut_calendar/tui/app.py:137
+msgid "Week before"
+msgstr "Poprzedni tydzień"
+
+#: src/zut_calendar/tui/app.py:138
+msgid "Week next"
+msgstr "Następny tydzień"
+
+#: src/zut_calendar/tui/app.py:140
+msgid "Go left"
+msgstr "W lewo"
+
+#: src/zut_calendar/tui/app.py:141
+msgid "Go up"
+msgstr "W górę"
+
+#: src/zut_calendar/tui/app.py:143
+msgid "Go down"
+msgstr "W dół"
+
+#: src/zut_calendar/tui/app.py:144
+msgid "Go right"
+msgstr "W prawo"
+
+#: src/zut_calendar/tui/widgets.py:26
+msgid "Current week"
+msgstr "Aktualny tydzień"
+
+#: src/zut_calendar/tui/widgets.py:28
+#, python-brace-format
+msgid "{} week(s) into the future"
+msgstr "{} tyg. w przyszłość"
+
+#: src/zut_calendar/tui/widgets.py:30
+#, python-brace-format
+msgid "{} week(s) into the past"
+msgstr "{} tyg. temu"
+
+#: src/zut_calendar/tui/widgets.py:69
+msgid "Show details"
+msgstr "Pokaż szczegóły"
+
+#: src/zut_calendar/data.py:7
+msgid "lecture"
+msgstr "wykład"
+
+#: src/zut_calendar/data.py:8
+msgid "auditorium"
+msgstr "audytorium"
+
+#: src/zut_calendar/data.py:9
+msgid "laboratory"
+msgstr "laboratorium"
+
+#: src/zut_calendar/api.py:43
+msgid "No student id found"
+msgstr "Nie znaleziono numeru indeksu"
+
+#: src/zut_calendar/api.py:48
+msgid "Invalid student ID format"
+msgstr "Niepoprawny format numeru indeksu"
+
+#: src/zut_calendar/api.py:69
+#, python-brace-format
+msgid "Last refresh was less than 2h ago ({:.0f} min), reading cache..."
+msgstr "Ostatnie odświeżenie miało miejsce mniej niż 2h temu ({:.0f} min), wczytywanie z pamięci podręcznej..."
+
+#: src/zut_calendar/api.py:77
+#, python-brace-format
+msgid "Error while getting http request: {}"
+msgstr "Błąd podczas zapytania http: {}"
