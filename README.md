@@ -71,6 +71,9 @@ Just type `zut-calendar`. You can set everything in the TUI itself. There are so
 - On Unix-like systems config is stored in `$XDG_CONFIG_HOME/zut-calendar/config.ini`
 - On Windows it's in `%LocalAppData%\szymon-jozef\zut-calendar\config.ini`
 
+Example config is stored at `examples/config.ini`. It's copied to your config dir by default.
+Entry names are pretty self-explanatory.
+
 # Localisation
 As of now this project supports English and Polish. Your language will be selected based on `$LANG`. If you want to overwrite it just set it before starting the program: `LANG=en zut-calendar`
 
