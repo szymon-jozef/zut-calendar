@@ -40,7 +40,8 @@ class Config:
                 "next_week" : self._config_parser.get("navigation", "next_week", fallback="L"),
                 "prev_week" : self._config_parser.get("navigation", "prev_week", fallback="H"),
                 "refresh" : self._config_parser.get("navigation", "refresh", fallback="f5"),
-                "quit" : self._config_parser.get("navigation", "quit", fallback="q")
+                "quit" : self._config_parser.get("navigation", "quit", fallback="q"),
+                "show_details" : self._config_parser.get("navigation", "show_details", fallback="enter")
                 }
         self.looks = {
                 "scale" : self._config_parser.get("looks", "scale", fallback="4")

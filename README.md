@@ -82,9 +82,9 @@ As of now it doesn't make any sense to translate this, because a lot will probab
 
 # TODO
 - [x] Proper grid layout with hours shown
-- [ ] Focusing, moving around and checking specific class info
+- [x] Focusing, moving around and checking specific class info (kinda)
 - [x] Checking other weeks than current
-- [ ] Good styles
+- [x] Good styles (i guess)
 
 ---
 *Project inspired by [zutui](https://github.com/shv187/zutui)

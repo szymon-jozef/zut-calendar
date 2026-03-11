@@ -15,15 +15,13 @@ class DetailsScreen(ModalScreen):
             (_config.nav["quit"], "close_screen", _("Close"))
     ]
 
-    def __init__(self, class_entry: data.ClassEntry):
+    def __init__(self, data: data.ClassEntry):
         super().__init__()
-        self.class_entry = class_entry
+        self.data = data
 
     def compose(self) -> ComposeResult:
         with Vertical(id="details-dialog"):
-            yield Label(self.class_entry.description)
-            yield Label(str(f"Początek: {datetime.fromisoformat(self.class_entry.start.replace(" ", "T"))}"))
-            yield Label(str(f"Koniec: {datetime.fromisoformat(self.class_entry.end.replace(" ", "T"))}"))
+            yield Label(str(self.data))
             # TODO! finish this later
         yield Footer()
 

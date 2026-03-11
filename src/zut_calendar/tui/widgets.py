@@ -3,6 +3,7 @@ from textual.app import ComposeResult
 from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
 from textual.widget import Widget
+from rich.text import Text
 
 from zut_calendar import data, utils, io
 
@@ -65,8 +66,10 @@ class DayColumn(Vertical):
                 yield ClassEvent(event)
 
 class ClassEvent(Widget):
+    config = io.Config()
+
     BINDINGS = [
-            ("enter", "show_details", _("Show details"))
+            (config.nav["show_details"], "show_details", _("Show details"))
     ]
 
     def __init__(self, info: data.ClassEntry):
@@ -75,8 +78,16 @@ class ClassEvent(Widget):
         self.can_focus = True
 
     def compose(self):
-        yield Label(self.data.description)
+        time_start = datetime.fromisoformat(self.data.start).time().strftime("%H:%M")
+        time_end = datetime.fromisoformat(self.data.end).time().strftime("%H:%M")
+        pretty_time = f"{time_start} - {time_end}"
+
+        title_text = Text(self.data.title, no_wrap=True, overflow="ellipsis")
+        
+        yield Label(title_text)
+        yield Label(pretty_time, classes="time-label")
         yield Label(self.data.worker)
+        yield Label(self.data.room)
         type_str = self.data.type.value if self.data.type else "Unknown"
         yield Label(type_str)
 

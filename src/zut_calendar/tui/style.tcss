@@ -31,6 +31,30 @@
     height: auto;
 }
 
+DetailsScreen {
+    align: center middle; 
+}
+
+#details-dialog {
+    width: 60%;
+    height: 80%;
+    background: $surface;
+    border: panel $primary;
+    align: center middle; 
+    padding: 5;
+}
+
+#details-dialog Label {
+    width: auto;
+    height: auto;
+    text-align: center;
+}
+
+.time-label {
+    color: $text-muted;
+    text-style: italic;
+}
+
 DateRow {
     background: $surface-lighten-1;
     color: $secondary;
@@ -44,11 +68,17 @@ DateRow {
 /* --- Events --- */
 
 ClassEvent {
+    width: 100%;
     padding: 0 1;
     margin: 0;
     margin-bottom: 1; 
     border: tall transparent; 
     background: $surface;
+    overflow: hidden;
+}
+
+ClassEvent Label {
+    width: 100%;
 }
 
 ClassEvent:hover {
