@@ -116,7 +116,7 @@ This project is mostly finished, but will be developed further. If you want to, 
 - [x] Checking other weeks than current
 - [x] Good styles (i guess)
 - [ ] Checking teachers schedule by name
-- [ ] Displaying week by dates
+- [x] Displaying week by dates
 
 ---
 *Project inspired by [zutui](https://github.com/shv187/zutui)
