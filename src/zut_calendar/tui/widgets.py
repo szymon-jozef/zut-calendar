@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from textual.app import ComposeResult
 from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
@@ -29,6 +30,13 @@ class DateRow(Static):
             text = _("{} week(s) into the future").format(weeks_abs)
         else:
             text = _("{} week(s) into the past").format(weeks_abs)
+
+        start, end = utils.get_dates(self.week_offset)
+
+        start = start.date()
+        end = end.date()
+
+        text += "\n{} - {}".format(start, end)
         
         self.update(text)
 
