@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 from urllib.parse import quote
 from requests.models import HTTPError
 
-from zut_calendar import io
+from zut_calendar import io, utils
 from . import utils
 
 _ = utils.get_locale_thing()
@@ -14,17 +14,8 @@ class MissingStudentId(Exception):
     pass
 
 def _get_dates(week_offset=0) -> tuple[str, str]:
-    tz = ZoneInfo("Europe/Warsaw")
-    now = datetime.now(tz)
-    lstate = io.State()
-    lstate.save_last_run(now)
-
-    start = now - timedelta(days=now.weekday()) + timedelta(weeks=week_offset)
-    start = start.replace(hour=0,minute=0, second=0, microsecond=0)
-
-    end = start + timedelta(days=6)
-    end = end.replace(hour=23,minute=59, second=59, microsecond=59)
-
+    start, end = utils.get_dates(week_offset)
+    
     start_iso = start.isoformat()
     end_iso = end.isoformat()
 

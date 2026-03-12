@@ -63,6 +63,7 @@ DateRow {
     text-style: bold italic;
     border-bottom: tall $primary 50%;
     margin-bottom: 1;
+    text-align: center;
 }
 
 /* --- Events --- */
