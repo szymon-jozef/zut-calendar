@@ -1,3 +1,9 @@
+[![Nix CI](https://github.com/szymon-jozef/zut-calendar/actions/workflows/ci.yml/badge.svg)](https://github.com/szymon-jozef/zut-calendar/actions/workflows/ci.yml)
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![Built with Textual](https://img.shields.io/badge/Built_with-Textual-112233?logo=terminal&logoColor=white)](https://textual.textualize.io/)
+
 # Zut Calendar TUI client
 
 This project aims to improve the life of ZUT students that love the terminal!
