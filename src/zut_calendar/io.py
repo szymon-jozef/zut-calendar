@@ -1,4 +1,6 @@
 from configparser import ConfigParser
+from os import chmod
+import stat
 import appdirs
 import datetime
 import shutil
@@ -58,7 +60,8 @@ class Config:
             source_path = Path(__file__).parent / "examples" / "config.ini"
             
             if source_path.exists():
-                shutil.copy(source_path, self._config_file)
+                shutil.copyfile(source_path, self._config_file)
+                chmod(self._config_file, stat.S_IRWXU)
             else:
                 self._config_parser.add_section("navigation")
                 with open(self._config_file, "w") as f:
