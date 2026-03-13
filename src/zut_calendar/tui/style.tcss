@@ -66,6 +66,11 @@ DateRow {
     text-align: center;
 }
 
+DayColumn.today {
+    background: $surface;
+    tint: $accent 15%; 
+}
+
 /* --- Events --- */
 
 ClassEvent {

@@ -59,9 +59,17 @@ class EventContainer(Container):
         self.styles.width = "100%"
 
 class DayColumn(Vertical):
-    def __init__(self, events: list):
+    def __init__(self, events: list[data.ClassEntry]):
         super().__init__()
         self.events = events
+
+        tz = ZoneInfo("Europe/Warsaw")
+        now = datetime.now(tz).date()
+
+        if events:
+            column_day = datetime.fromisoformat(events[0].start).date()
+            if now == column_day:
+                self.add_class("today")
 
     def on_mount(self):
         self.styles.width = "1fr"
