@@ -78,6 +78,8 @@ class DayColumn(Vertical):
     
     def compose(self) -> ComposeResult:
         with EventContainer():
+            yield Label(str(self.column_date.strftime("%d.%m.%Y")), classes="date-label")
+
             for event in self.events:
                 yield ClassEvent(event)
 
