@@ -1,6 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, date
 from zoneinfo import ZoneInfo
-from textual.app import ComposeResult
+from textual.app import ComposeResult, RenderResult
 from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
 from textual.widget import Widget
@@ -59,16 +59,16 @@ class EventContainer(Container):
         self.styles.width = "100%"
 
 class DayColumn(Vertical):
-    def __init__(self, events: list[data.ClassEntry]):
+    def __init__(self, column_date: date, events: list[data.ClassEntry]):
         super().__init__()
+        self.column_date = column_date
         self.events = events
 
         tz = ZoneInfo("Europe/Warsaw")
         now = datetime.now(tz).date()
 
         if events:
-            column_day = datetime.fromisoformat(events[0].start).date()
-            if now == column_day:
+            if now == self.column_date:
                 self.add_class("today")
 
     def on_mount(self):
@@ -80,6 +80,9 @@ class DayColumn(Vertical):
         with EventContainer():
             for event in self.events:
                 yield ClassEvent(event)
+
+            if self.has_class("today"):
+                yield CurrentTimeLine()
 
 class ClassEvent(Widget):
     config = io.Config()
@@ -136,3 +139,19 @@ class ClassEvent(Widget):
     def action_show_details(self) -> None:
         from .screens import DetailsScreen
         self.app.push_screen(DetailsScreen(self.data))
+
+class CurrentTimeLine(Widget):
+    def on_mount(self):
+        SCALE, START_HOUR, END_HOUR = _get_info()
+        tz = ZoneInfo("Europe/Warsaw")
+        now = datetime.now(tz)
+
+        now_decimal = now.hour + (now.minute / 60)
+
+        if START_HOUR <= now_decimal <= END_HOUR + 1:
+            offset_y = int((now_decimal - START_HOUR) * SCALE)
+            self.styles.position = "absolute"
+            self.styles.offset = (0, offset_y)
+
+    def render(self) -> RenderResult:
+        return ""

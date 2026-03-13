@@ -71,6 +71,12 @@ DayColumn.today {
     tint: $accent 15%; 
 }
 
+CurrentTimeLine {
+    width: 100%;
+    height: 1;
+    background: #e74c3c;
+}
+
 /* --- Events --- */
 
 ClassEvent {
