@@ -1,17 +1,16 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 import asyncio
+
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, VerticalScroll, Vertical
 from textual import work
 from textual.widget import Widget
 from textual.widgets import Footer, Header, Label
+from zut_calendar.tui.screens import LoginWindow
+from zut_calendar.tui.widgets import DateRow, DayColumn, TimeColumn, ClassEvent
 
-from zut_calendar import data, api, io, utils
-
-from .screens import LoginWindow
-from .widgets import DateRow, DayColumn, TimeColumn, ClassEvent
-
-_ = utils.get_locale_thing()
+from zut_calendar import data, api
+from zut_calendar.utils import _, config
 
 class ZutCalendarApp(App):
     CSS_PATH = "./style.tcss"
@@ -19,7 +18,6 @@ class ZutCalendarApp(App):
     def __init__(self, force=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.week_offset = 0
-        self.config = io.Config()
         self.force = force
 
     def compose(self) -> ComposeResult:
@@ -79,7 +77,6 @@ class ZutCalendarApp(App):
 
     async def _handle_login_error(self):
         self.notify(_("Invalid student ID or missing data!"), severity="error")
-        config = io.Config()
         
         student_id = await self.push_screen_wait(LoginWindow())
 
@@ -89,7 +86,9 @@ class ZutCalendarApp(App):
             self.action_refresh(True)
 
     def _build_columns(self, classes) -> list[Widget]:
-        today = datetime.today()
+        from zut_calendar.utils import get_now
+        today = get_now()
+
         monday = today - timedelta(days=today.weekday()) + timedelta(weeks=self.week_offset)
         
         columns: list[Widget] = [TimeColumn()]
@@ -134,16 +133,16 @@ class ZutCalendarApp(App):
     async def on_mount(self):
         self.title = "Zut Calendar"
 
-        self.bind(self.config.nav["quit"], "quit", description=_("Quit app"))
-        self.bind(self.config.nav["refresh"], "refresh(True)", description=_("Refresh"))
-        self.bind(self.config.nav["prev_week"], "prev_week", description=_("Week before"))
-        self.bind(self.config.nav["next_week"], "next_week", description=_("Week next"))
+        self.bind(config.nav["quit"], "quit", description=_("Quit app"))
+        self.bind(config.nav["refresh"], "refresh(True)", description=_("Refresh"))
+        self.bind(config.nav["prev_week"], "prev_week", description=_("Week before"))
+        self.bind(config.nav["next_week"], "next_week", description=_("Week next"))
         
-        self.bind(self.config.nav["left"], "focus_prev", description=_("Go left"))
-        self.bind(self.config.nav["up"], "focus_prev", description=_("Go up"))
+        self.bind(config.nav["left"], "focus_prev", description=_("Go left"))
+        self.bind(config.nav["up"], "focus_prev", description=_("Go up"))
         
-        self.bind(self.config.nav["down"], "focus_next", description=_("Go down"))
-        self.bind(self.config.nav["right"], "focus_next", description=_("Go right"))
+        self.bind(config.nav["down"], "focus_next", description=_("Go down"))
+        self.bind(config.nav["right"], "focus_next", description=_("Go right"))
 
         self.action_refresh(self.force)
 

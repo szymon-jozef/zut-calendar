@@ -1,17 +1,15 @@
 from datetime import datetime, date
-from zoneinfo import ZoneInfo
 from textual.app import ComposeResult, RenderResult
 from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
 from textual.widget import Widget
 from rich.text import Text
 
-from zut_calendar import data, utils, io
+from zut_calendar import data, utils
+from zut_calendar.utils import _, get_now, get_today, config
 
-_ = utils.get_locale_thing()
 
 def _get_info() -> tuple[int, int, int]:
-    config = io.Config()
     SCALE = int(config.looks["scale"])
     START_HOUR = 8
     END_HOUR = 21
@@ -64,10 +62,7 @@ class DayColumn(Vertical):
         self.column_date = column_date
         self.events = events
 
-        tz = ZoneInfo("Europe/Warsaw")
-        now = datetime.now(tz).date()
-
-        if now == self.column_date:
+        if get_today() == self.column_date:
             self.add_class("today")
 
     def on_mount(self):
@@ -84,8 +79,6 @@ class DayColumn(Vertical):
                 yield ClassEvent(event)
 
 class ClassEvent(Widget):
-    config = io.Config()
-
     BINDINGS = [
             (config.nav["show_details"], "show_details", _("Show details"))
     ]
@@ -140,9 +133,7 @@ class ClassEvent(Widget):
 class CurrentTimeLine(Widget):
     def on_mount(self):
         SCALE, START_HOUR, END_HOUR = _get_info()
-        tz = ZoneInfo("Europe/Warsaw")
-        now = datetime.now(tz)
-
+        now = get_now()
         now_decimal = now.hour + (now.minute / 60)
 
         if START_HOUR <= now_decimal <= END_HOUR + 1:
