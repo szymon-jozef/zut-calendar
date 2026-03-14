@@ -10,7 +10,7 @@ This project aims to improve the life of ZUT students that love the terminal!
 
 If you're tired of checking `https://plan.zut.edu.pl/` every day and don't like classic calendar integration, it's something for you.
 
-*state of project as of 11.03.2026 with class info redacted*
+*state of project as of 14.03.2026 with class info redacted*
 ![Screenshot](./assets/screenshot.png)
 
 # Features
