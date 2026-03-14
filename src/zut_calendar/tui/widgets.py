@@ -3,6 +3,7 @@ from textual.app import ComposeResult, RenderResult
 from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
 from textual.widget import Widget
+from textual import log
 from rich.text import Text
 
 from zut_calendar import data, utils
@@ -119,8 +120,12 @@ class ClassEvent(Widget):
             self.styles.offset = (1, offset_y)
             self.styles.height = max(2, height) 
             
-        except Exception:
-            pass
+        except ValueError as e:
+            log.error(f"Error parsing date for event: {self.data.title}: {e}")
+            self.styles.display = "none"
+        except Exception as e:
+            log.error(f"Unknown error for event: {self.data.title}: {e}")
+            self.styles.display = "none"
 
     def on_click(self) -> None:
         from .screens import DetailsScreen
