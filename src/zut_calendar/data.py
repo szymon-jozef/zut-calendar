@@ -1,8 +1,7 @@
 from enum import Enum
 from datetime import datetime
-from . import utils
+from zut_calendar.utils import _
 
-_ = utils.get_locale_thing()
 
 class ClassType(Enum):
     W = _("lecture")

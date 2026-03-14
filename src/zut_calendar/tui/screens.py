@@ -3,16 +3,14 @@ from textual.widgets import Input
 from textual.containers import  Vertical, Center, Middle
 from textual.screen import ModalScreen
 from textual.widgets import Footer, Label
-from datetime import datetime
-from zut_calendar import data, io, utils
+from zut_calendar import data
+from zut_calendar.utils import _, config
 
-_ = utils.get_locale_thing()
 
 class DetailsScreen(ModalScreen):
-    _config = io.Config()
 
     BINDINGS = [
-            (_config.nav["quit"], "close_screen", _("Close"))
+            (config.nav["quit"], "close_screen", _("Close"))
     ]
 
     def __init__(self, data: data.ClassEntry):
@@ -22,7 +20,6 @@ class DetailsScreen(ModalScreen):
     def compose(self) -> ComposeResult:
         with Vertical(id="details-dialog"):
             yield Label(str(self.data))
-            # TODO! finish this later
         yield Footer()
 
     def on_mount(self) -> None:

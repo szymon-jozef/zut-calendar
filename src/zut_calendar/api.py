@@ -1,20 +1,17 @@
 import requests
 from textual import log
-from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
+from datetime import timedelta
 from urllib.parse import quote
 from requests.models import HTTPError
 
-from zut_calendar import io, utils
-from . import utils
-
-_ = utils.get_locale_thing()
+from zut_calendar import io
+from zut_calendar.utils import _, get_dates, config, state, get_now
 
 class MissingStudentId(Exception):
     pass
 
 def _get_dates(week_offset=0) -> tuple[str, str]:
-    start, end = utils.get_dates(week_offset)
+    start, end = get_dates(week_offset)
     
     start_iso = start.isoformat()
     end_iso = end.isoformat()
@@ -25,7 +22,6 @@ def _get_dates(week_offset=0) -> tuple[str, str]:
     return start_url, end_url
 
 def _get_url(week_offset=0) -> str:
-    config = io.Config()
     config.read_config()
 
     student_id = config.student_id
@@ -43,14 +39,11 @@ def _get_url(week_offset=0) -> str:
     return f"https://plan.zut.edu.pl/schedule_student.php?number={student_id}&start={start}&end={end}"
 
 def get_plan(force_refresh=False, week_offset=0):
-    tz = ZoneInfo("Europe/Warsaw")
-    now = datetime.now(tz)
+    now = get_now()
     start = now - timedelta(days=now.weekday()) + timedelta(weeks=week_offset)
     cache_name = start.strftime("%G-W%V-%u.json")
-
     cache = io.Cache(cache_name)
 
-    state = io.State()
     last_run = state.get_last_run()
     if not force_refresh:
 
