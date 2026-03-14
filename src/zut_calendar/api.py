@@ -50,11 +50,11 @@ def get_plan(force_refresh=False, week_offset=0):
 
     cache = io.Cache(cache_name)
 
+    state = io.State()
+    last_run = state.get_last_run()
     if not force_refresh:
-        state = io.State()
-        last_run = state.get_last_run()
 
-        if last_run is not None and  cache.exists():
+        if last_run is not None and cache.exists():
             time_diff = now - last_run
             if time_diff < timedelta(hours=2):
                 log.info(_("Last refresh was less than 2h ago ({:.0f} min), reading cache...").format(time_diff.total_seconds() / 60))
@@ -70,5 +70,6 @@ def get_plan(force_refresh=False, week_offset=0):
 
     plan = result.json()
     cache.save_cache(plan)
+    state.save_last_run(now)
 
     return plan
