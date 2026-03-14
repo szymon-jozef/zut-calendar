@@ -67,9 +67,8 @@ class DayColumn(Vertical):
         tz = ZoneInfo("Europe/Warsaw")
         now = datetime.now(tz).date()
 
-        if events:
-            if now == self.column_date:
-                self.add_class("today")
+        if now == self.column_date:
+            self.add_class("today")
 
     def on_mount(self):
         self.styles.width = "1fr"
@@ -79,12 +78,10 @@ class DayColumn(Vertical):
     def compose(self) -> ComposeResult:
         with EventContainer():
             yield Label(str(self.column_date.strftime("%d.%m.%Y")), classes="date-label")
+            yield CurrentTimeLine()
 
             for event in self.events:
                 yield ClassEvent(event)
-
-            if self.has_class("today"):
-                yield CurrentTimeLine()
 
 class ClassEvent(Widget):
     config = io.Config()
@@ -107,12 +104,11 @@ class ClassEvent(Widget):
         
         yield Label(title_text)
         yield Label(pretty_time, classes="time-label")
-        yield Label(self.data.worker)
         yield Label(self.data.room)
+        yield Label(self.data.worker)
 
     def on_mount(self):
         SCALE, START_HOUR, _ = _get_info()
-
         try:
             if self.data.type:
                 self.add_class(f"type-{self.data.type.name.lower()}")
@@ -127,9 +123,8 @@ class ClassEvent(Widget):
             height = int((end_decimal - start_decimal) * SCALE)
             
             self.styles.position = "absolute"
-            self.styles.offset = (0, offset_y)
+            self.styles.offset = (1, offset_y)
             self.styles.height = max(2, height) 
-            self.styles.width = "100%"
             
         except Exception:
             pass
@@ -154,6 +149,8 @@ class CurrentTimeLine(Widget):
             offset_y = int((now_decimal - START_HOUR) * SCALE)
             self.styles.position = "absolute"
             self.styles.offset = (0, offset_y)
+        else:
+            self.display = False
 
     def render(self) -> RenderResult:
         return ""

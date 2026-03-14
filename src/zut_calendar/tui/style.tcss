@@ -66,9 +66,17 @@ DateRow {
     text-align: center;
 }
 
-DayColumn.today {
-    background: $surface;
-    tint: $accent 15%; 
+DayColumn {
+    border-right: solid $primary 50%;
+    content-align: center middle;
+}
+
+TimeColumn {
+    border-right: solid $secondary 50%;
+}
+
+DayColumn.today EventContainer {
+    background: $surface-lighten-1;
 }
 
 DayColumn .date-label {
@@ -85,10 +93,9 @@ CurrentTimeLine {
 /* --- Events --- */
 
 ClassEvent {
-    width: 100%;
-    padding: 0 1;
+    width: 95%;
     margin: 0;
-    margin-bottom: 1; 
+    padding: 0 1;
     border: tall transparent; 
     background: $surface;
     overflow: hidden;
