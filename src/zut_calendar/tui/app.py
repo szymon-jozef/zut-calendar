@@ -97,7 +97,7 @@ class ZutCalendarApp(App):
             current_day = monday + timedelta(days=i)
             date_str = current_day.strftime("%Y-%m-%d")
             events_of_day = [e for e in classes if e.start and e.start.startswith(date_str)]
-            columns.append(DayColumn(events_of_day)) 
+            columns.append(DayColumn(current_day.date(), events_of_day)) 
             
         return columns
 

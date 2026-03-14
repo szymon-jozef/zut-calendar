@@ -1,6 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, date
 from zoneinfo import ZoneInfo
-from textual.app import ComposeResult
+from textual.app import ComposeResult, RenderResult
 from textual.containers import Vertical, Container
 from textual.widgets import Label, Static
 from textual.widget import Widget
@@ -59,9 +59,16 @@ class EventContainer(Container):
         self.styles.width = "100%"
 
 class DayColumn(Vertical):
-    def __init__(self, events: list):
+    def __init__(self, column_date: date, events: list[data.ClassEntry]):
         super().__init__()
+        self.column_date = column_date
         self.events = events
+
+        tz = ZoneInfo("Europe/Warsaw")
+        now = datetime.now(tz).date()
+
+        if now == self.column_date:
+            self.add_class("today")
 
     def on_mount(self):
         self.styles.width = "1fr"
@@ -70,6 +77,9 @@ class DayColumn(Vertical):
     
     def compose(self) -> ComposeResult:
         with EventContainer():
+            yield Label(str(self.column_date.strftime("%d.%m.%Y")), classes="date-label")
+            yield CurrentTimeLine()
+
             for event in self.events:
                 yield ClassEvent(event)
 
@@ -94,12 +104,11 @@ class ClassEvent(Widget):
         
         yield Label(title_text)
         yield Label(pretty_time, classes="time-label")
-        yield Label(self.data.worker)
         yield Label(self.data.room)
+        yield Label(self.data.worker)
 
     def on_mount(self):
         SCALE, START_HOUR, _ = _get_info()
-
         try:
             if self.data.type:
                 self.add_class(f"type-{self.data.type.name.lower()}")
@@ -114,9 +123,8 @@ class ClassEvent(Widget):
             height = int((end_decimal - start_decimal) * SCALE)
             
             self.styles.position = "absolute"
-            self.styles.offset = (0, offset_y)
+            self.styles.offset = (1, offset_y)
             self.styles.height = max(2, height) 
-            self.styles.width = "100%"
             
         except Exception:
             pass
@@ -128,3 +136,21 @@ class ClassEvent(Widget):
     def action_show_details(self) -> None:
         from .screens import DetailsScreen
         self.app.push_screen(DetailsScreen(self.data))
+
+class CurrentTimeLine(Widget):
+    def on_mount(self):
+        SCALE, START_HOUR, END_HOUR = _get_info()
+        tz = ZoneInfo("Europe/Warsaw")
+        now = datetime.now(tz)
+
+        now_decimal = now.hour + (now.minute / 60)
+
+        if START_HOUR <= now_decimal <= END_HOUR + 1:
+            offset_y = int((now_decimal - START_HOUR) * SCALE)
+            self.styles.position = "absolute"
+            self.styles.offset = (0, offset_y)
+        else:
+            self.display = False
+
+    def render(self) -> RenderResult:
+        return ""
