@@ -92,8 +92,23 @@
         }
       );
 
-      packages = forAllSystems (system: {
-        default = pythonSets.${system}.mkVirtualEnv "zut-calendar" workspace.deps.default;
-      });
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          venv = pythonSets.${system}.mkVirtualEnv "zut-calendar" workspace.deps.default;
+        in
+        {
+          default = pkgs.symlinkJoin {
+            name = "zut-calendar-0.1.0";
+            pname = "zut-calendar";
+            version = "0.1.0";
+            paths = [ venv ];
+            meta = {
+              mainProgram = "zut-calendar";
+            };
+          };
+        }
+      );
     };
 }
